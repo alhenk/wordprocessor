@@ -10,7 +10,12 @@ punctuation,
 paragraph
 
 priority high
-Create entities with junit, first junit then entity
+	Create entities with junit: Test Driven Design
+	Create TextDocumentTest extends TextTestCase 
+	(TextTestCase does not exist yet, so IDE asked to create it )
+	Create test : Text text - IDE asked to create the class (TDD)
+	new Text(getFile("test.txt")); - IDE asked to create the constructor
+	Text.getFirstLine() - IDE asked to create the method
 
 Status: in process
 

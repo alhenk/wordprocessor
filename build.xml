@@ -16,6 +16,12 @@
 		<pathelement location="lib/log4j-1.2.17.jar"/>
 		<pathelement location="lib/junit-4.1.jar"/>
     </path>
+	
+	<path id="test.classpath">
+			<pathelement location="build"/>
+			<pathelement location="lib/log4j-1.2.17.jar"/>
+			<pathelement location="lib/junit-4.1.jar"/>
+	</path>
 
 	<target name="init">
 		<mkdir dir="${build.dir}" />
@@ -60,5 +66,9 @@
             <classpath refid="wp.classpath"/>
         </java>
     </target>
-	
+
+	<junit>
+	<classpath refid="test.classpath"/>
+		<test name="com.epam.koryagin.wp.TextDocumentTest"/>
+	</junit>
 </project>
