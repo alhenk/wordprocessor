@@ -1,0 +1,24 @@
+Initial iteration
+
+Description
+priority middle
+Create a hierarchy of character entities: 
+sing, 
+word, 
+sentence, 
+punctuation,
+paragraph
+
+priority high
+Create entities with junit, first junit then entity
+
+Status: in process
+
+Time estimation - 20 h
+
+Due to 20120224
+(The whole project due to 20120302)
+
+Demonstration:
+Classes
+ 

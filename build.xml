@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<project name="wordprocessor"  basedir="." default="build" >
+
+	<property name="debuglevel" value="source,lines,vars"/>
+	<property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+
+	<property name="src.dir" location="src" />
+    <property name="build.dir" location="build" />
+    <property name="dist.dir" location="dist" />
+
+	<echo level="error" message="running" />
+
+	<path id="wp.classpath">
+		<pathelement location="build"/>
+		<pathelement location="lib/log4j-1.2.17.jar"/>
+		<pathelement location="lib/junit-4.1.jar"/>
+    </path>
+
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<copy file="./resources/log4j.properties" todir="${build.dir}"/>
+		<!-->
+		<copy todir= "${build.dir}/com/epam/koryagin/wp/resources">
+			<fileset dir="${src.dir}/com/epam/koryagin/wp/resources"></fileset>
+		</copy>
+		<-->
+	</target>
+
+	<target name="build" depends="build-project" />
+	<target name="build-project" depends="init" 
+			description= "Compiles the source code" >
+		<echo message="${ant.project.name}: ${ant.file}"/>
+		<javac 	includeantruntime="true"
+				debug="true" 
+	            debuglevel="${debuglevel}"
+				destdir="${build.dir}"
+				fork="yes"
+            	target="${target}"
+				srcdir="${src.dir}">
+				<src path="src"/>
+				<classpath refid="wp.classpath"/>
+		</javac>
+	</target>
+		
+	<target name="archive" depends="build-project"
+			description="Creates the JAR file">
+		<jar destfile="dist/wp.jar"
+			basedir="${build.dir}" />
+	</target>
+		
+	<target name="clean" depends="init">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<target name="run" depends="build-project, archive">
+        <java classname="com.epam.koryagin.wp.Runner" failonerror="true" fork="yes">
+            <classpath refid="wp.classpath"/>
+        </java>
+    </target>
+	
+</project>
