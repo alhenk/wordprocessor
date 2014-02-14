@@ -39,7 +39,7 @@ public class TxtDocumentTest extends TxtDocumentTestCase {
 		assertEquals("Test getLine()", "First line.", doc.getLine(0));
 		assertEquals("Test purge white spaces",
 				"Second line with white spaces.",
-				doc.purgeWhitespace(doc.getLine(1)));
+				doc.purge(doc.getLine(1)));
 		assertEquals(
 				"Test purge white spaces in content collection",
 				content,

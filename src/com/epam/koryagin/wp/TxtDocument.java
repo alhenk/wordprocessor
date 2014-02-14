@@ -63,7 +63,7 @@ public class TxtDocument {
 	 * @param line
 	 * @return line
 	 */
-	public String purgeWhitespace(String line) {
+	public String purge(String line) {
 		line = line.trim();
 		line = line.replaceAll("\\s+\\.$", ".");
 		line = line.replaceAll("\\s+,$", ",");
@@ -74,7 +74,7 @@ public class TxtDocument {
 	public List<String> purge(LinkedList<String> content) {
 		String line;
 		for (int i = 0; i < content.size(); i++) {
-			line = purgeWhitespace(content.get(i));
+			line = purge(content.get(i));
 			content.set(i, line);
 		}
 		return content;
