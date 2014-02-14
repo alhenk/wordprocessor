@@ -58,5 +58,18 @@ public class TextDocument {
 		this.content = content;
 	}
 
+	/**
+	 * remove all extra whitespaces
+	 * and replace it with one space
+	 * @param line
+	 * @return
+	 */
+	public String purgeWhitespace(String line) {
+		line = line.trim();
+		line = line.replaceAll("\\s+\\.$", ".");
+		line = line.replaceAll("\\s+", " ");
+		return line;
+	}
+
 }
 

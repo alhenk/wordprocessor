@@ -1,2 +1,2 @@
 First line.
-   Second   line with 	white	spaces .
+   Second   line with 	white	spaces  .

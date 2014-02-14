@@ -26,5 +26,8 @@ public class TextDocumentTest extends TextDocumentTestCase {
 	@Test
 	public void testDoc() throws IOException {
 		assertEquals("Test getLine()", "First line.", doc.getLine(0));
+		assertEquals("Test purge white spaces",  
+				"Second line with white spaces.", 
+				doc.purgeWhitespace(doc.getLine(1)));
 	}
 }
