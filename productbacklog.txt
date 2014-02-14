@@ -9,13 +9,13 @@ sentence,
 punctuation,
 paragraph
 
-priority high
+priority high - follow TDD approach
 	Create entities with junit: Test Driven Design
-	Create TextDocumentTest extends TextTestCase 
+	Create TextDocumentTest extends TextDocumentTestCase 
 	(TextTestCase does not exist yet, so IDE asked to create it )
-	Create test : Text text - IDE asked to create the class (TDD)
-	new Text(getFile("test.txt")); - IDE asked to create the constructor
-	Text.getFirstLine() - IDE asked to create the method
+	Create test : TextDocumen doc - IDE asked to create the class (TDD)
+	doc = new TextDocument(getFile("test.txt")); - IDE asked to create the constructor
+	doc.getLine(0) - IDE asked to create the method
 
 Status: in process
 
@@ -23,6 +23,9 @@ Time estimation - 20 h
 
 Due to 20120224
 (The whole project due to 20120302)
+20140213 2h
+20140214 5h
+
 
 Demonstration:
 Classes

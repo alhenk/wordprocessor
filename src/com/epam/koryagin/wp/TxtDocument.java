@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TextDocument {
+public class TxtDocument {
 	private List<String> content;
-	
-	public TextDocument(){
+
+	public TxtDocument() {
 	}
 
-	public TextDocument(File file) {
+	public TxtDocument(File file) {
 		BufferedReader br = null;
 		content = new LinkedList<String>();
 		try {
@@ -43,12 +43,12 @@ public class TextDocument {
 
 	public String getLine(int i) {
 		String line = "";
-		if (content != null){
+		if (content != null) {
 			line = content.get(i);
 		}
 		return line;
 	}
-	
+
 	// Getters & Setters
 	public List<String> getContent() {
 		return content;
@@ -59,25 +59,50 @@ public class TextDocument {
 	}
 
 	/**
-	 * remove all extra whitespaces
-	 * and replace it with one space
+	 * Remove all extra whitespace and replace it with one space
 	 * @param line
-	 * @return
+	 * @return line
 	 */
 	public String purgeWhitespace(String line) {
 		line = line.trim();
 		line = line.replaceAll("\\s+\\.$", ".");
+		line = line.replaceAll("\\s+,$", ",");
 		line = line.replaceAll("\\s+", " ");
 		return line;
 	}
 
 	public List<String> purge(LinkedList<String> content) {
-		String 	line;
-		for(int i=0;i<content.size();i++){
+		String line;
+		for (int i = 0; i < content.size(); i++) {
 			line = purgeWhitespace(content.get(i));
 			content.set(i, line);
 		}
 		return content;
 	}
-}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TxtDocument other = (TxtDocument) obj;
+		if (content == null) {
+			if (other.content != null)
+				return false;
+		} else if (!content.equals(other.content))
+			return false;
+		return true;
+	}
+
+}
