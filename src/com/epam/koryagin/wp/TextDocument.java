@@ -71,5 +71,13 @@ public class TextDocument {
 		return line;
 	}
 
+	public List<String> purge(LinkedList<String> content) {
+		String 	line;
+		for(int i=0;i<content.size();i++){
+			line = purgeWhitespace(content.get(i));
+			content.set(i, line);
+		}
+		return content;
+	}
 }
 
