@@ -7,29 +7,28 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class TextDocument {
-	private String text;
+	private String content;
+	
+	public TextDocument(){}
 
 	public TextDocument(File file) {
 		BufferedReader br = null;
-		setText("");
+		content="";
 		try {
-			br = new BufferedReader(new FileReader("test.txt"));
+			br = new BufferedReader(new FileReader(file));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
-
 		if (br != null) {
 			try {
 				StringBuilder sb = new StringBuilder();
 				String line = br.readLine();
-
 				while (line != null) {
 					sb.append(line);
 					sb.append(System.lineSeparator());
 					line = br.readLine();
 				}
-				text = sb.toString();
-				System.out.println();
+				content = sb.toString();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -43,17 +42,18 @@ public class TextDocument {
 	}
 
 	public String getFirstLine() {
-		String[] lines = text.split(System.getProperty("line.separator"));
-		System.out.println(lines[0]);
+		String[] lines = content.split(System.getProperty("line.separator"));
 		return lines[0];
 	}
-
-	public String getText() {
-		return text;
+	
+	// Getters & Setters
+	public String getContent() {
+		return content;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 }
+

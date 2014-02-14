@@ -26,7 +26,7 @@ public class TextDocumentTest extends TextDocumentTestCase {
 
 	@Before
 	public void setUp() throws IOException {
-		doc = new TextDocument(getFile("h:\\JAVALAB\\wordprocessor\\test.txt"));
+		doc = new TextDocument(getFile("test.txt"));
 	}
 
 	@After
@@ -36,7 +36,7 @@ public class TextDocumentTest extends TextDocumentTestCase {
 
 	@Test
 	public void testDoc() throws IOException{
-		doc = new TextDocument(getFile("h:\\JAVALAB\\wordprocessor\\test.txt"));
-		assertEquals("First line.", "Reading First Line Test", doc.getFirstLine());
+		//doc = new TextDocument(getFile("test.txt"));
+		assertEquals("Test getFirstLine()", "First line.", doc.getFirstLine());
 	}
 }
