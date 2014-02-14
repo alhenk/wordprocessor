@@ -5,15 +5,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TextDocument {
-	private String content;
+	private List<String> content;
 	
-	public TextDocument(){}
+	public TextDocument(){
+	}
 
 	public TextDocument(File file) {
 		BufferedReader br = null;
-		content="";
+		content = new LinkedList<String>();
 		try {
 			br = new BufferedReader(new FileReader(file));
 		} catch (FileNotFoundException e1) {
@@ -21,14 +24,11 @@ public class TextDocument {
 		}
 		if (br != null) {
 			try {
-				StringBuilder sb = new StringBuilder();
 				String line = br.readLine();
 				while (line != null) {
-					sb.append(line);
-					sb.append(System.lineSeparator());
+					content.add(line);
 					line = br.readLine();
 				}
-				content = sb.toString();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -41,17 +41,20 @@ public class TextDocument {
 		}
 	}
 
-	public String getFirstLine() {
-		String[] lines = content.split(System.getProperty("line.separator"));
-		return lines[0];
+	public String getLine(int i) {
+		String line = "";
+		if (content != null){
+			line = content.get(i);
+		}
+		return line;
 	}
 	
 	// Getters & Setters
-	public String getContent() {
+	public List<String> getContent() {
 		return content;
 	}
 
-	public void setContent(String content) {
+	public void setContent(List<String> content) {
 		this.content = content;
 	}
 
