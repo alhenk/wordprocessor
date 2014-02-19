@@ -8,5 +8,7 @@ public class Runner {
 //		System.out.println(td.getFirstLine());
 //		Runner runner = new Runner();
 //		System.out.println(runner.getClass().getResource("test.txt"));
+		
+		
 	}
 }
