@@ -37,11 +37,17 @@ public class Parser {
 		while (mat.find()){
 			tokens.add(mat.group());
 		}
-//		tokens.add("Second");
-//		tokens.add("line");
-//		tokens.add("with");
-//		tokens.add("white");
-//		tokens.add("spaces");
 		return tokens;
+	}
+
+	public List<String> sentences(String line) {
+		List<String> sentences = new LinkedList<String>();
+		String[] result = line.split("[.?!]+");
+		if (result!=null){
+			for(String str : result){
+				sentences.add(str.trim());
+			}
+		}
+		return sentences;
 	}
 }

@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Represents text document, a list of lines - content
+ * 
+ * @author Alexandr Koryagin
+ */
 public class TxtDocument {
 	private List<String> content;
 
@@ -60,6 +65,7 @@ public class TxtDocument {
 
 	/**
 	 * Remove all extra whitespace and replace it with one space
+	 * 
 	 * @param line
 	 * @return line
 	 */
