@@ -13,13 +13,13 @@ import java.util.List;
  * 
  * @author Alexandr Koryagin
  */
-public class TxtDocument {
+public class TextReader {
 	private List<String> content;
 
-	public TxtDocument() {
+	public TextReader() {
 	}
 
-	public TxtDocument(File file) {
+	public TextReader(File file) {
 		BufferedReader br = null;
 		content = new LinkedList<String>();
 		try {
@@ -63,28 +63,7 @@ public class TxtDocument {
 		this.content = content;
 	}
 
-	/**
-	 * Remove all extra whitespace and replace it with one space
-	 * 
-	 * @param line
-	 * @return line
-	 */
-	public String purge(String line) {
-		line = line.trim();
-		line = line.replaceAll("\\s+\\.$", ".");
-		line = line.replaceAll("\\s+,$", ",");
-		line = line.replaceAll("\\s+", " ");
-		return line;
-	}
 
-	public List<String> purge(LinkedList<String> content) {
-		String line;
-		for (int i = 0; i < content.size(); i++) {
-			line = purge(content.get(i));
-			content.set(i, line);
-		}
-		return content;
-	}
 
 	@Override
 	public int hashCode() {
@@ -102,7 +81,7 @@ public class TxtDocument {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TxtDocument other = (TxtDocument) obj;
+		TextReader other = (TextReader) obj;
 		if (content == null) {
 			if (other.content != null)
 				return false;

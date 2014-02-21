@@ -12,10 +12,10 @@ public class Runner {
 //		Runner runner = new Runner();
 //		System.out.println(runner.getClass().getResource("test.txt"));
 		
-		File file = new File("h:\\JAVALAB\\wordprocessor\\sample_text.txt");
+		File file = new File("h:\\JAVALAB\\wordprocessor\\sample_content.txt");
 		
-		TxtDocument doc = new TxtDocument(file);
-		LinkedList<String> content= (LinkedList<String>) doc.purge(new LinkedList<String>(doc.getContent()));
+		TextReader doc = new TextReader(file);
+		LinkedList<String> content= (LinkedList<String>) Processor.purge(new LinkedList<String>(doc.getContent()));
 		System.out.println(content);
 		
 	}

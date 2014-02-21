@@ -8,8 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ParserTest extends TxtDocumentTestCase {
-	private TxtDocument doc;
+public class ParserTest extends TextReaderTestCase {
+	private TextReader doc;
 	private Parser parser;
 	private Set<String> content;
 	private Set<String> tokens;
@@ -17,7 +17,7 @@ public class ParserTest extends TxtDocumentTestCase {
 
 	@Before
 	public void setUp() throws IOException {
-		doc = new TxtDocument(getFile("sample_sentences.txt"));
+		doc = new TextReader(getFile("sample_sentences.txt"));
 		parser = new Parser(doc);
 
 		content = new LinkedHashSet<String>();

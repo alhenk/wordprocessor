@@ -6,10 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser {
-	private TxtDocument doc;
+	private TextReader doc;
 	private List<String> tokens;
 
-	public Parser(TxtDocument doc) {
+	public Parser(TextReader doc) {
 		this.setDoc(doc);
 		tokens = new LinkedList<String>();
 	}
@@ -22,11 +22,11 @@ public class Parser {
 		this.tokens = tokens;
 	}
 	
-	public TxtDocument getDoc() {
+	public TextReader getDoc() {
 		return doc;
 	}
 
-	public void setDoc(TxtDocument doc) {
+	public void setDoc(TextReader doc) {
 		this.doc = doc;
 	}
 	

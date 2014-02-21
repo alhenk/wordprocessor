@@ -9,16 +9,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TxtDocumentTest extends TxtDocumentTestCase {
-	private TxtDocument doc;
+public class TextReaderTest extends TextReaderTestCase {
+	private TextReader doc;
 	private Set<String> content;
-	public TxtDocumentTest() {
+	public TextReaderTest() {
 		super();
 	}
 
 	@Before
 	public void setUp() throws IOException {
-		doc = new TxtDocument(getFile("sample_content.txt"));
+		doc = new TextReader(getFile("sample_content.txt"));
 		content = new LinkedHashSet<String>();
 		content.add("First line.");
 		content.add("Second line with white spaces.");
@@ -39,11 +39,11 @@ public class TxtDocumentTest extends TxtDocumentTestCase {
 		assertEquals("Test getLine()", "First line.", doc.getLine(0));
 		assertEquals("Test purge white spaces in single line",
 				"Second line with white spaces.",
-				doc.purge(doc.getLine(1)));
+				Processor.purge(doc.getLine(1)));
 		assertEquals(
 				"Test purge white spaces in collection content",
 				content,
-				new LinkedHashSet<String>(doc.purge(new LinkedList<String>(doc
+				new LinkedHashSet<String>(Processor.purge(new LinkedList<String>(doc
 						.getContent()))));
 	}
 
