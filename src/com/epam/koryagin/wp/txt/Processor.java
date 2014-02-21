@@ -42,33 +42,24 @@ public final class Processor {
 		return content;
 	}
 
-	public static void paragraphDetector(List<String> content) {
+	public static List<String> paragraphDetector(List<String> content) {
 		List<String> paragraphs = new LinkedList<String>();
-
 		StringBuilder sb = new StringBuilder();
-
 		String endOfParagraphRegex = "[!?\\.]+[\"]*$";
-		// String emptyStringRegex = "^[\\s]+|^$";
 		Pattern endOfParagraphPattern = Pattern.compile(endOfParagraphRegex);
-		// Pattern emptyStringPattern = Pattern.compile(emptyStringRegex);
 		Matcher endOfParagraph;
-		// Matcher emptyString;
 		ListIterator<String> iterator = (ListIterator<String>) content
 				.iterator();
 		while (iterator.hasNext()) {
 			String line = (String) iterator.next();
 			endOfParagraph = endOfParagraphPattern.matcher(line);
-			// emptyString = emptyStringPattern.matcher(line);
 			sb.append(line);
 			if (endOfParagraph.find() || iterator.nextIndex() == content.size()) {
 				paragraphs.add(purge(mergeLine(sb.toString())));
 				sb = new StringBuilder();
 			}
 		}
-		for (String element : paragraphs) {
-			System.out.println(element);
-		}
-
+		return paragraphs;
 	}
 
 }
