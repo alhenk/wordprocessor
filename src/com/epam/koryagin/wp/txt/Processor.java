@@ -1,4 +1,4 @@
-package com.epam.koryagin.wp;
+package com.epam.koryagin.wp.txt;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,6 +31,11 @@ public final class Processor {
 			content.set(i, line);
 		}
 		return content;
+	}
+
+	public static void paragraphDetector(String text) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

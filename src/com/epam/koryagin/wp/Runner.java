@@ -3,6 +3,8 @@ package com.epam.koryagin.wp;
 import java.io.File;
 import java.util.LinkedList;
 
+import com.epam.koryagin.wp.txt.Processor;
+
 public class Runner {
 	public static void main(String[] args) {
 //		System.out.println("WORDPROCESSOR");
