@@ -27,12 +27,6 @@ public final class Processor {
 		return line;
 	}
 
-	public static String mergeLine(String line) {
-		line = line.trim();
-		line = line.replace("\n", " ").replace("\r", " ");
-		return line;
-	}
-
 	public static List<String> purge(LinkedList<String> content) {
 		String line;
 		for (int i = 0; i < content.size(); i++) {
@@ -53,9 +47,9 @@ public final class Processor {
 		while (iterator.hasNext()) {
 			String line = (String) iterator.next();
 			endOfParagraph = endOfParagraphPattern.matcher(line);
-			sb.append(line);
+			sb.append(line).append(" "); // for avoiding concatenation of two words
 			if (endOfParagraph.find() || iterator.nextIndex() == content.size()) {
-				paragraphs.add(purge(mergeLine(sb.toString())));
+				paragraphs.add(purge(sb.toString()));
 				sb = new StringBuilder();
 			}
 		}
