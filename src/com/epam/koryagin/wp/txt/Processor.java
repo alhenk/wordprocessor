@@ -2,10 +2,13 @@ package com.epam.koryagin.wp.txt;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Processor {
-	
-	private Processor(){
+
+	private Processor() {
 	}
 
 	/**
@@ -24,6 +27,12 @@ public final class Processor {
 		return line;
 	}
 
+	public static String mergeLine(String line) {
+		line = line.trim();
+		line = line.replace("\n", " ").replace("\r", " ");
+		return line;
+	}
+
 	public static List<String> purge(LinkedList<String> content) {
 		String line;
 		for (int i = 0; i < content.size(); i++) {
@@ -33,9 +42,33 @@ public final class Processor {
 		return content;
 	}
 
-	public static void paragraphDetector(String text) {
-		// TODO Auto-generated method stub
-		
+	public static void paragraphDetector(List<String> content) {
+		List<String> paragraphs = new LinkedList<String>();
+
+		StringBuilder sb = new StringBuilder();
+
+		String endOfParagraphRegex = "[!?\\.]+[\"]*$";
+		// String emptyStringRegex = "^[\\s]+|^$";
+		Pattern endOfParagraphPattern = Pattern.compile(endOfParagraphRegex);
+		// Pattern emptyStringPattern = Pattern.compile(emptyStringRegex);
+		Matcher endOfParagraph;
+		// Matcher emptyString;
+		ListIterator<String> iterator = (ListIterator<String>) content
+				.iterator();
+		while (iterator.hasNext()) {
+			String line = (String) iterator.next();
+			endOfParagraph = endOfParagraphPattern.matcher(line);
+			// emptyString = emptyStringPattern.matcher(line);
+			sb.append(line);
+			if (endOfParagraph.find() || iterator.nextIndex() == content.size()) {
+				paragraphs.add(purge(mergeLine(sb.toString())));
+				sb = new StringBuilder();
+			}
+		}
+		for (String element : paragraphs) {
+			System.out.println(element);
+		}
+
 	}
-	
+
 }
