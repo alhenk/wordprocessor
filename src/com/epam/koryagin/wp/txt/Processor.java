@@ -24,6 +24,7 @@ public final class Processor {
 		line = line.replaceAll("\\s+!$", "!");
 		line = line.replaceAll("\\s+?$", "?");
 		line = line.replaceAll("\\s+", " ");
+		line = line.replaceAll("¬", "");
 		return line;
 	}
 
@@ -36,21 +37,40 @@ public final class Processor {
 		return content;
 	}
 
+	/**
+	 * Paragraph detector return merges lines of content in one paragraph by the
+	 * empty string followed the block or end of line and full stop sign
+	 * 
+	 * @param content
+	 * @return
+	 */
 	public static List<String> paragraphDetector(List<String> content) {
 		List<String> paragraphs = new LinkedList<String>();
 		StringBuilder sb = new StringBuilder();
-		String endOfParagraphRegex = "[!?\\.]+[\"]*$";
+		String endOfParagraphRegex = "[!?\\.…]+[\"]*$";
+		String emptyLineRegex = "(^[\\s]*$)";
 		Pattern endOfParagraphPattern = Pattern.compile(endOfParagraphRegex);
+		Pattern emptyLinePattern = Pattern.compile(emptyLineRegex);
 		Matcher endOfParagraph;
+		Matcher emptyLine;
 		ListIterator<String> iterator = (ListIterator<String>) content
 				.iterator();
 		while (iterator.hasNext()) {
-			String line = (String) iterator.next();
-			endOfParagraph = endOfParagraphPattern.matcher(line);
-			sb.append(line).append(" "); // for avoiding concatenation of two words
-			if (endOfParagraph.find() || iterator.nextIndex() == content.size()) {
+			String currentLine = (String) iterator.next();
+			emptyLine = emptyLinePattern.matcher(currentLine);
+			endOfParagraph = endOfParagraphPattern.matcher(currentLine);
+			if (emptyLine.matches()) {
 				paragraphs.add(purge(sb.toString()));
 				sb = new StringBuilder();
+			} else if (endOfParagraph.find()
+					|| iterator.nextIndex() == content.size()) {
+				sb.append(currentLine).append(" ");// append(" ") - for avoiding
+													// concatenation of two edge
+													// words
+				paragraphs.add(purge(sb.toString()));
+				sb = new StringBuilder();
+			} else {
+				sb.append(currentLine).append(" ");
 			}
 		}
 		return paragraphs;

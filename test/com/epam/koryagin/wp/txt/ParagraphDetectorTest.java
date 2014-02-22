@@ -11,7 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ProcessorParagraphTest {
+public class ParagraphDetectorTest {
 	private List<String> content;
 	private Set<String> testParagraphs;
 	

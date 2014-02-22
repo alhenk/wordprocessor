@@ -14,17 +14,19 @@ public class Runner {
 		// Runner runner = new Runner();
 		// System.out.println(runner.getClass().getResource("test.txt"));
 
-		File file = new File("h:\\JAVALAB\\wordprocessor\\sample_pg1661.txt");
+		File file = new File("h:\\JAVALAB\\wordprocessor\\sample_txt.txt");
 
 		TextReader doc = new TextReader(file);
 		LinkedList<String> content = (LinkedList<String>) Processor
 				.purge(new LinkedList<String>(doc.getContent()));
+		
 		System.out.println(content.size());
 		LinkedList<String> paragraphs = (LinkedList<String>) Processor
 				.paragraphDetector(content);
 		System.out.println(paragraphs.size());
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 40/*paragraphs.size()*/; i++) {
 			System.out.println(paragraphs.get(i));
+			//System.out.println();
 		}
 
 	}
