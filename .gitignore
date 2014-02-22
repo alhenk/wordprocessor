@@ -50,3 +50,5 @@ build
 .save
 *~
 feedback.txt
+sample_*.txt
+

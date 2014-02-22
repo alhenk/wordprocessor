@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
-public class TxtDocumentTestCase extends TestCase {
-	public TxtDocumentTestCase() {
+public class TextReaderTestCase extends TestCase {
+	public TextReaderTestCase() {
 		super();
 	}
 	
