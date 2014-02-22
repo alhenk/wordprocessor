@@ -14,7 +14,7 @@ public class Runner {
 		// Runner runner = new Runner();
 		// System.out.println(runner.getClass().getResource("test.txt"));
 
-		File file = new File("h:\\JAVALAB\\wordprocessor\\sample_txt.txt");
+		File file = new File("h:\\JAVALAB\\wordprocessor\\sample_doc.txt");
 
 		TextReader doc = new TextReader(file);
 		LinkedList<String> content = (LinkedList<String>) Processor
@@ -24,7 +24,7 @@ public class Runner {
 		LinkedList<String> paragraphs = (LinkedList<String>) Processor
 				.paragraphDetector(content);
 		System.out.println(paragraphs.size());
-		for (int i = 0; i < 40/*paragraphs.size()*/; i++) {
+		for (int i = 0; i < paragraphs.size(); i++) {
 			System.out.println(paragraphs.get(i));
 			//System.out.println();
 		}

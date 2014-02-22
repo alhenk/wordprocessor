@@ -3,11 +3,12 @@ package com.epam.koryagin.wp.txt;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class Processor {
-
+	public static ResourceBundle properties = ResourceBundle.getBundle("com.epam.koryagin.wp.resources.paragraph");
 	private Processor() {
 	}
 
@@ -24,7 +25,7 @@ public final class Processor {
 		line = line.replaceAll("\\s+!$", "!");
 		line = line.replaceAll("\\s+?$", "?");
 		line = line.replaceAll("\\s+", " ");
-		line = line.replaceAll("¬", "");
+		line = line.replaceAll("\u00ac", "");
 		return line;
 	}
 
@@ -47,8 +48,10 @@ public final class Processor {
 	public static List<String> paragraphDetector(List<String> content) {
 		List<String> paragraphs = new LinkedList<String>();
 		StringBuilder sb = new StringBuilder();
-		String endOfParagraphRegex = "[!?\\.…]+[\"]*$";
-		String emptyLineRegex = "(^[\\s]*$)";
+		//String endOfParagraphRegex = "[!?\\.…]+[\"]*$";
+		String endOfParagraphRegex = properties.getString("paragraph.separator");
+		//String emptyLineRegex = "(^[\\s]*$)";
+		String emptyLineRegex = properties.getString("paragraph.emptyline");
 		Pattern endOfParagraphPattern = Pattern.compile(endOfParagraphRegex);
 		Pattern emptyLinePattern = Pattern.compile(emptyLineRegex);
 		Matcher endOfParagraph;
