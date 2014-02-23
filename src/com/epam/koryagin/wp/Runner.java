@@ -26,7 +26,7 @@ public class Runner {
 		System.out.println(paragraphs.size());
 		for (int i = 0; i < paragraphs.size(); i++) {
 			System.out.println(paragraphs.get(i));
-			//System.out.println();
+			System.out.println();
 		}
 
 	}
