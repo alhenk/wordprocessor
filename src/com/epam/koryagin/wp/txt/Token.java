@@ -2,7 +2,7 @@ package com.epam.koryagin.wp.txt;
 
 public class Token {
 	public static enum Type{
-		WORD, PUNCTUATION, UNDEFINED;
+		WORD, QUOTATION, PUNCTUATION, UNDEFINED;
 	}
 	private String value;
 	private Type type;
@@ -17,11 +17,11 @@ public class Token {
 		this.type = Type.UNDEFINED;
 	}
 
-	public String getToken() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setToken(String value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

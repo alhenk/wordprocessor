@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Sentence {
 	public static enum Type{
-		INTERROGATIVE, DECLARATIVE, EXCLAMATORY, UNDEFINED;
+		DECLARATIVE, INTERROGATIVE,  EXCLAMATORY, HEADER, QUOTATION, UNDEFINED;
 	}
 	public static Sentence create(List<Token> tokens){
 		return new Sentence(tokens);
@@ -15,9 +15,11 @@ public class Sentence {
 	
 	public Sentence(){
 		this.sentence = new LinkedList<Token>();
+		this.type = Sentence.Type.UNDEFINED;
 	}
 	private Sentence(List<Token> tokens){
 		this.sentence = tokens;
+		this.type = Sentence.Type.UNDEFINED;
 	}
 
 	public List<Token> getSentence() {
