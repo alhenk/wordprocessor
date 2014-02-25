@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Top hierarchy class of a textual entity consist of a list of paragraphs
  * 
- * @author Koryagin
+ * @author Alexandr Koryagin
  * 
  */
 public class TextDocument implements Serializable, Comparable<TextDocument> {

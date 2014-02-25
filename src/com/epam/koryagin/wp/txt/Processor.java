@@ -14,7 +14,7 @@ import com.epam.koryagin.wp.TextReader;
  * Utility class for text processing purge(String) purge(LinkedList<String>)
  * paragraphDetector(List<String>) tokenize(String txtLine)
  * 
- * @author Koryagin
+ * @author Alexandr Koryagin
  * @date 20140225
  */
 public final class Processor {
@@ -209,6 +209,10 @@ public final class Processor {
 		Paragraph paragraph;
 		List<Paragraph> paragraphs = new LinkedList<Paragraph>();
 		TextReader doc = new TextReader(file);
+		if(doc == null || doc.getContent().size() == 0){
+			return TextDocument.create(paragraphs);
+		}
+		
 		LinkedList<String> content = (LinkedList<String>) Processor
 				.purge(new LinkedList<String>(doc.getContent()));
 

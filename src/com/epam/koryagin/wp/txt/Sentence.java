@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Sentence consist of tokens
  * 
- * @author Koryagin
+ * @author Alexandr Koryagin
  * 
  */
 public class Sentence implements Serializable, Comparable<Sentence> {

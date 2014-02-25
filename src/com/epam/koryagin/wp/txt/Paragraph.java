@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Paragraph consist of a list of sentences
  * 
- * @author Koryagin
+ * @author Alexandr Koryagin
  * 
  */
 public class Paragraph implements Serializable, Comparable<Paragraph> {

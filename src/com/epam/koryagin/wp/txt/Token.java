@@ -1,7 +1,12 @@
 package com.epam.koryagin.wp.txt;
 
 import java.io.Serializable;
-
+/**
+ * Token the lowest hierarchy textual entity
+ * 
+ * @author Alexandr Koryagin
+ *
+ */
 public class Token implements Serializable, Comparable<Token> {
 	private static final long serialVersionUID = 5160172131539910739L;
 

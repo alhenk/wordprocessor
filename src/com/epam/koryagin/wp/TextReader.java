@@ -8,39 +8,42 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /**
- * Represents text document, a list of lines - content
- * 
+ * TextReader represents text document, a list of lines - content
+ * constructor read a file line by line
  * @author Alexandr Koryagin
  */
 public class TextReader {
+	private static final Logger LOGGER = Logger.getLogger(Runner.class);
 	private List<String> content;
 
 	public TextReader() {
 	}
 
 	public TextReader(File file) {
-		BufferedReader br = null;
+		BufferedReader bufferedReder = null;
 		content = new LinkedList<String>();
 		try {
-			br = new BufferedReader(new FileReader(file));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
+			bufferedReder = new BufferedReader(new FileReader(file));
+		} catch (FileNotFoundException e) {
+			LOGGER.error("File not found" + e);
 		}
-		if (br != null) {
+		if (bufferedReder != null) {
 			try {
-				String line = br.readLine();
+				String line = bufferedReder.readLine();
 				while (line != null) {
 					content.add(line);
-					line = br.readLine();
+					line = bufferedReder.readLine();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOGGER.error("Reading Line Error" + e);
 			} finally {
 				try {
-					br.close();
+					bufferedReder.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					LOGGER.error("File Close Error" + e);
 				}
 			}
 		}
