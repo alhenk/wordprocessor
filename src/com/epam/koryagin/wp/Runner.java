@@ -41,8 +41,8 @@ public class Runner {
 		if (document == null || document.getParagraphs().size() == 0) {
 			LOGGER.error("Failed to get document");
 		} else {
-			LOGGER.info(Processor.printText(document));
-			LOGGER.info(Processor.printXML(document));
+			//LOGGER.info("\n"+Processor.printText(document));
+			LOGGER.info("\n"+Processor.printXML(document));
 		}
 	}
 }

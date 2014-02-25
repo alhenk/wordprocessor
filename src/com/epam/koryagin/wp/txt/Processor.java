@@ -227,7 +227,7 @@ public final class Processor {
 	}
 	
 	public static String printText(TextDocument document) {
-		StringBuilder stringBuilder = new StringBuilder("\n");
+		StringBuilder stringBuilder = new StringBuilder();
 		for (Paragraph paragraph : document.getParagraphs()) {
 			for (Sentence sentence : paragraph.getSentences()) {
 				for (Token token : sentence.getTokens()) {
@@ -241,7 +241,7 @@ public final class Processor {
 	}
 	
 	public static String printXML(TextDocument document) {
-		StringBuilder stringBuilder = new StringBuilder("\n");
+		StringBuilder stringBuilder = new StringBuilder();
 		for (Paragraph paragraph : document.getParagraphs()) {
 			stringBuilder.append("<p>\n");
 			for (Sentence sentence : paragraph.getSentences()) {
