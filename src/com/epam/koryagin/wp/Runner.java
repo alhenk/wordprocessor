@@ -3,11 +3,13 @@ package com.epam.koryagin.wp;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import org.apache.log4j.Logger;
 import com.epam.koryagin.wp.txt.Processor;
 import com.epam.koryagin.wp.txt.Sentence;
 import com.epam.koryagin.wp.txt.Token;
 
 public class Runner {
+	private static final Logger LOGGER = Logger.getLogger(Runner.class);
 
 	public static void main(String[] args) {
 		File file = new File("h:\\JAVALAB\\wordprocessor\\sample_doc.txt");
@@ -16,12 +18,10 @@ public class Runner {
 		LinkedList<String> content = (LinkedList<String>) Processor
 				.purge(new LinkedList<String>(doc.getContent()));
 
-		// System.out.println(content.size());
 		LinkedList<String> rawParagraphs = (LinkedList<String>) Processor
 				.paragraphDetector(content);
-		// System.out.println(paragraphs.size());
 
-		StringBuilder stringBuilder = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder("\n");
 		for (String paragraph : rawParagraphs) {
 			List<Sentence> sentence = Processor.tokenize(paragraph);
 			stringBuilder.append("<p>\n");
@@ -38,7 +38,6 @@ public class Runner {
 			}
 			stringBuilder.append("</p>\n");
 		}
-
-		System.out.println(stringBuilder.toString());
+		LOGGER.info(stringBuilder.toString());
 	}
 }

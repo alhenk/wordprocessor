@@ -1,18 +1,23 @@
 package com.epam.koryagin.wp.txt;
 
-public class Token {
-	public static enum Type{
+import java.io.Serializable;
+
+public class Token implements Serializable, Comparable<Token> {
+	private static final long serialVersionUID = 5160172131539910739L;
+
+	public static enum Type {
 		WORD, NUMERIC, QUOTATION_MARK, PUNCTUATION, UNDEFINED;
 	}
+
 	private String value;
 	private Type type;
-	
-	public Token(){
-		this.value= "";
+
+	public Token() {
+		this.value = "";
 		this.type = Type.UNDEFINED;
 	}
-	
-	public Token(String value){
+
+	public Token(String value) {
 		this.value = value;
 		this.type = Type.UNDEFINED;
 	}
@@ -64,5 +69,10 @@ public class Token {
 	@Override
 	public String toString() {
 		return "Token [value=" + value + ", type=" + type + "]";
+	}
+
+	@Override
+	public int compareTo(Token o) {
+		return value.compareTo(o.getValue());
 	}
 }

@@ -1,9 +1,18 @@
 package com.epam.koryagin.wp.txt;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Paragraph {
+/**
+ * Paragraph consist of a list of sentences
+ * 
+ * @author Koryagin
+ * 
+ */
+public class Paragraph implements Serializable, Comparable<Paragraph> {
+	private static final long serialVersionUID = 5886337702405072061L;
+
 	public static Paragraph create(List<Sentence> sentences) {
 		return new Paragraph(sentences);
 	}
@@ -57,6 +66,16 @@ public class Paragraph {
 
 	@Override
 	public String toString() {
-		return "Paragraph [sentences=" + sentences + "]";
+		StringBuilder sb = new StringBuilder();
+		sb.append("Paragraph [ ").append(sentences.size())
+				.append(" - sentenses]\n");
+		sb.append(sentences.toString());
+		return sb.toString();
+	}
+
+	@Override
+	public int compareTo(Paragraph o) {
+		return (this.hashCode() < o.hashCode()) ? -1 : ((this.hashCode() == o
+				.hashCode()) ? 0 : 1);
 	}
 }

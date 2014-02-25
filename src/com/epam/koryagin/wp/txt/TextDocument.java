@@ -4,8 +4,14 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Top hierarchy class of a textual entity consist of a list of paragraphs
+ * 
+ * @author Koryagin
+ * 
+ */
 public class TextDocument implements Serializable, Comparable<TextDocument> {
-	private static final long serialVersionUID = -8185555909924614830L;
+	private static final long serialVersionUID = -4353199310763248838L;
 
 	/**
 	 * Static constructor
@@ -72,7 +78,8 @@ public class TextDocument implements Serializable, Comparable<TextDocument> {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("TextDocument [ ").append(paragraphs.size()).append("]\n");
+		sb.append("TextDocument [ ").append(paragraphs.size())
+				.append(" - paragraphs ]\n");
 		sb.append(paragraphs.toString());
 		return sb.toString();
 	}
