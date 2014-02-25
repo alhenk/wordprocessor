@@ -27,6 +27,9 @@
 		<mkdir dir="${build.dir}/classes" />
 		<mkdir dir="${dist.dir}" />
 		<copy file="./resources/log4j.properties" todir="${build.dir}/classes" />
+		<copy todir= "${build.dir}/classes/com/epam/koryagin/wp/resources">
+					<fileset dir="${src.dir}/com/epam/koryagin/wp/resources"></fileset>
+				</copy>
 	</target>
 
 	<target name="build" depends="build-project" />
