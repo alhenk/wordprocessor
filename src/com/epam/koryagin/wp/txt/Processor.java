@@ -1,5 +1,6 @@
 package com.epam.koryagin.wp.txt;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -7,12 +8,12 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.epam.koryagin.wp.TextReader;
+
 /**
- * Utility class for text processing
- * purge(String)
- * purge(LinkedList<String>)
- * paragraphDetector(List<String>)
- * tokenize(String txtLine)
+ * Utility class for text processing purge(String) purge(LinkedList<String>)
+ * paragraphDetector(List<String>) tokenize(String txtLine)
+ * 
  * @author Koryagin
  * @date 20140225
  */
@@ -103,36 +104,21 @@ public final class Processor {
 		return paragraphs;
 	}
 
-	/**
-	 * Parse sentence and tokens 
-	 * @param txtLine string line
-	 * @return paragraph list of Sentences
-	 */
-	public static List<Sentence> tokenize(String txtLine) {
-		//final String tokenRegex = "(\\w+(?:[-\']\\w+)*|\'|“|”|\"|`|[-.(]+|\\S\\w*|[\\W]+\\d*[\\.,]\\d+)";
-		String tokenRegex = properties.getString("regex.token");
-		List<String> tokens = new LinkedList<String>();
+	public static List<Sentence> breakSentence(List<String> tokens) {
 		String quotationRegex = properties.getString("regex.quotation");
-		//Pattern quotationPattern = Pattern.compile("[\'\"“”`]");
 		Pattern quotationPattern = Pattern.compile(quotationRegex);
 		Matcher quotationMatcher;
-		Pattern tokenPattern = Pattern.compile(tokenRegex);
-		Matcher tokenMatcher = tokenPattern.matcher(txtLine);
-		while (tokenMatcher.find()) {
-			tokens.add(tokenMatcher.group());
-		}
-		tokens.add(System.lineSeparator());
 		Sentence sentence;
-		List<Sentence> paragraph = new LinkedList<Sentence>();
+		List<Sentence> sentences = new LinkedList<Sentence>();
 		List<Token> phrase = new LinkedList<Token>();
 
 		for (String element : tokens) {
 			if (element != null) {
 				quotationMatcher = quotationPattern.matcher(element);
-				if (quotationMatcher.find()) {
+				if (quotationMatcher.matches()) {
 					if (phrase.size() > 0) {
 						sentence = Sentence.create(phrase);
-						paragraph.add(sentence);
+						sentences.add(sentence);
 					}
 					phrase = new LinkedList<Token>();
 					Token theToken = new Token(element);
@@ -140,7 +126,7 @@ public final class Processor {
 					phrase.add(theToken);
 					sentence = Sentence.create(phrase);
 					sentence.setType(Sentence.Type.QUOTATION);
-					paragraph.add(sentence);
+					sentences.add(sentence);
 					phrase = new LinkedList<Token>();
 					continue;
 				}
@@ -153,7 +139,7 @@ public final class Processor {
 					if (phrase.size() > 0) {
 						sentence = Sentence.create(phrase);
 						sentence.setType(Sentence.Type.HEADER);
-						paragraph.add(sentence);
+						sentences.add(sentence);
 					}
 					phrase = new LinkedList<Token>();
 				} else if (element.equals(".")) {
@@ -161,27 +147,112 @@ public final class Processor {
 						sentence = Sentence.create(phrase);
 						// actually it is not always declarative
 						sentence.setType(Sentence.Type.DECLARATIVE);
-						paragraph.add(sentence);
+						sentences.add(sentence);
 					}
 					phrase = new LinkedList<Token>();
 				} else if (element.equals("?")) {
 					if (phrase.size() > 0) {
 						sentence = Sentence.create(phrase);
 						sentence.setType(Sentence.Type.INTERROGATIVE);
-						paragraph.add(sentence);
+						sentences.add(sentence);
 					}
 					phrase = new LinkedList<Token>();
 				} else if (element.equals("!")) {
 					if (phrase.size() > 0) {
 						sentence = Sentence.create(phrase);
 						sentence.setType(Sentence.Type.EXCLAMATORY);
-						paragraph.add(sentence);
+						sentences.add(sentence);
 					}
 					phrase = new LinkedList<Token>();
 				}
 			}
 		}
-		return paragraph;
+		return sentences;
 	}
 
+
+	public static List<String> breakSentence(String txtLine) {
+		return null;
+	}
+
+	/**
+	 * Parse sentence and tokens
+	 * 
+	 * @param txtLine
+	 *            string line
+	 * @return paragraph list of Sentences
+	 */
+	public static List<Sentence> tokenizer(String txtLine) {
+		return breakSentence(tokenize(txtLine));
+	}
+
+	/**
+	 * Parse tokens
+	 * 
+	 * @param textLine
+	 * @return list of String
+	 */
+	public static List<String> tokenize(String textLine) {
+		String tokenRegex = properties.getString("regex.token");
+		List<String> tokens = new LinkedList<String>();
+		Pattern tokenPattern = Pattern.compile(tokenRegex);
+		Matcher tokenMatcher = tokenPattern.matcher(textLine);
+		while (tokenMatcher.find()) {
+			tokens.add(tokenMatcher.group());
+		}
+		tokens.add(System.lineSeparator());
+
+		return tokens;
+	}
+
+	public static TextDocument parser(File file) {
+		Paragraph paragraph;
+		List<Paragraph> paragraphs = new LinkedList<Paragraph>();
+		TextReader doc = new TextReader(file);
+		LinkedList<String> content = (LinkedList<String>) Processor
+				.purge(new LinkedList<String>(doc.getContent()));
+
+		LinkedList<String> rawParagraphs = (LinkedList<String>) Processor
+				.paragraphDetector(content);
+		for (String element : rawParagraphs) {
+			List<Sentence> sentences = Processor.tokenizer(element);
+			paragraph = Paragraph.create(sentences);
+			paragraphs.add(paragraph);
+		}
+		return TextDocument.create(paragraphs);
+	}
+	
+	public static String printText(TextDocument document) {
+		StringBuilder stringBuilder = new StringBuilder("\n");
+		for (Paragraph paragraph : document.getParagraphs()) {
+			for (Sentence sentence : paragraph.getSentences()) {
+				for (Token token : sentence.getTokens()) {
+					stringBuilder.append(token.getValue()).append(" ");
+				}
+				stringBuilder.append("\n");
+			}
+			stringBuilder.append("\n");
+		}
+		return stringBuilder.toString();
+	}
+	
+	public static String printXML(TextDocument document) {
+		StringBuilder stringBuilder = new StringBuilder("\n");
+		for (Paragraph paragraph : document.getParagraphs()) {
+			stringBuilder.append("<p>\n");
+			for (Sentence sentence : paragraph.getSentences()) {
+				stringBuilder.append("\t<sentence type=")
+						.append(sentence.getType()).append(">\n");
+				for (Token token : sentence.getTokens()) {
+					stringBuilder.append("\t\t<token type=")
+							.append(token.getType()).append(">\n\t\t\t");
+					stringBuilder.append(token.getValue()).append(" ");
+					stringBuilder.append("\n\t\t</token>\n");
+				}
+				stringBuilder.append("\t</sentence>\n");
+			}
+			stringBuilder.append("</p>\n");
+		}
+		return stringBuilder.toString();
+	}
 }

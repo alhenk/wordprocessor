@@ -34,12 +34,12 @@ public class Sentence implements Serializable, Comparable<Sentence> {
 		this.type = Sentence.Type.UNDEFINED;
 	}
 
-	public List<Token> getSentence() {
+	public List<Token> getTokens() {
 		return tokens;
 	}
 
-	public void setSentence(List<Token> sentence) {
-		this.tokens = sentence;
+	public void setTokens(List<Token> tokens) {
+		this.tokens = tokens;
 	}
 
 	public Type getType() {
