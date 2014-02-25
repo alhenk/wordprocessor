@@ -1,12 +1,15 @@
 package com.epam.koryagin.wp.txt;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
 
 import com.epam.koryagin.wp.TextReader;
 
@@ -18,6 +21,7 @@ import com.epam.koryagin.wp.TextReader;
  * @date 20140225
  */
 public final class Processor {
+	private static final Logger LOGGER = Logger.getLogger(Processor.class);
 	// ResourceBundle is more convenient than Properties
 	public static ResourceBundle properties = ResourceBundle
 			.getBundle("com.epam.koryagin.wp.resources.regex");
@@ -71,15 +75,31 @@ public final class Processor {
 	 * 
 	 * @param content
 	 * @return
+	 * @throws ParseException 
 	 */
-	public static List<String> paragraphDetector(List<String> content) {
+	public static List<String> paragraphDetector(List<String> content) throws ParseException {
 		List<String> paragraphs = new LinkedList<String>();
 		StringBuilder sb = new StringBuilder();
 		String endOfParagraphRegex = properties
 				.getString("regex.paragraph.separator");
 		String emptyLineRegex = properties.getString("regex.emptyline");
-		Pattern endOfParagraphPattern = Pattern.compile(endOfParagraphRegex);
-		Pattern emptyLinePattern = Pattern.compile(emptyLineRegex);
+		
+		Pattern endOfParagraphPattern;
+		try {
+			endOfParagraphPattern = Pattern.compile(endOfParagraphRegex);
+		} catch (IllegalArgumentException e) {
+			LOGGER.error("Sintax error in end of paragraph regex" + e);
+			throw new ParseException(endOfParagraphRegex, 0);
+		}
+		
+		Pattern emptyLinePattern;
+		try {
+			emptyLinePattern = Pattern.compile(emptyLineRegex);
+		} catch (IllegalArgumentException e) {
+			LOGGER.error("Sintax error in empty line regex" + e);
+			throw new ParseException(endOfParagraphRegex, 0);
+		}
+		
 		Matcher endOfParagraph;
 		Matcher emptyLine;
 		ListIterator<String> iterator = (ListIterator<String>) content
@@ -104,9 +124,24 @@ public final class Processor {
 		return paragraphs;
 	}
 
-	public static List<Sentence> breakSentence(List<String> tokens) {
+	/**
+	 * One particular way to detect sentences on the base of tokens
+	 * 
+	 * @param tokens
+	 * @return
+	 * @throws ParseException 
+	 */
+	public static List<Sentence> breakSentence(List<String> tokens) throws ParseException {
 		String quotationRegex = properties.getString("regex.quotation");
-		Pattern quotationPattern = Pattern.compile(quotationRegex);
+		
+		Pattern quotationPattern;
+		try {
+			quotationPattern = Pattern.compile(quotationRegex);
+		} catch (IllegalArgumentException e) {
+			LOGGER.error("Sintax error in quotation regex" + e);
+			throw new ParseException(quotationRegex, 0);
+		}
+		
 		Matcher quotationMatcher;
 		Sentence sentence;
 		List<Sentence> sentences = new LinkedList<Sentence>();
@@ -170,7 +205,6 @@ public final class Processor {
 		return sentences;
 	}
 
-
 	public static List<String> breakSentence(String txtLine) {
 		return null;
 	}
@@ -181,8 +215,10 @@ public final class Processor {
 	 * @param txtLine
 	 *            string line
 	 * @return paragraph list of Sentences
+	 * @throws ParseException
 	 */
-	public static List<Sentence> tokenizer(String txtLine) {
+	public static List<Sentence> tokenizer(String txtLine)
+			throws ParseException {
 		return breakSentence(tokenize(txtLine));
 	}
 
@@ -191,11 +227,20 @@ public final class Processor {
 	 * 
 	 * @param textLine
 	 * @return list of String
+	 * @throws ParseException
 	 */
-	public static List<String> tokenize(String textLine) {
+	public static List<String> tokenize(String textLine) throws ParseException {
 		String tokenRegex = properties.getString("regex.token");
 		List<String> tokens = new LinkedList<String>();
-		Pattern tokenPattern = Pattern.compile(tokenRegex);
+
+		Pattern tokenPattern;
+		try {
+			tokenPattern = Pattern.compile(tokenRegex);
+		} catch (IllegalArgumentException e) {
+			LOGGER.error("Sintax error in token regex" + e);
+			throw new ParseException(tokenRegex, 0);
+		}
+
 		Matcher tokenMatcher = tokenPattern.matcher(textLine);
 		while (tokenMatcher.find()) {
 			tokens.add(tokenMatcher.group());
@@ -205,14 +250,21 @@ public final class Processor {
 		return tokens;
 	}
 
-	public static TextDocument parser(File file) {
+	/**
+	 * Create TextDocument from the file
+	 * 
+	 * @param file
+	 * @return
+	 * @throws ParseException
+	 */
+	public static TextDocument parse(File file) throws ParseException {
 		Paragraph paragraph;
 		List<Paragraph> paragraphs = new LinkedList<Paragraph>();
 		TextReader doc = new TextReader(file);
-		if(doc == null || doc.getContent().size() == 0){
+		if (doc == null || doc.getContent().size() == 0) {
 			return TextDocument.create(paragraphs);
 		}
-		
+
 		LinkedList<String> content = (LinkedList<String>) Processor
 				.purge(new LinkedList<String>(doc.getContent()));
 
@@ -225,7 +277,14 @@ public final class Processor {
 		}
 		return TextDocument.create(paragraphs);
 	}
-	
+
+	/**
+	 * Print every sentence of the document in a new line, with empty line
+	 * between paragraphs
+	 * 
+	 * @param document
+	 * @return string
+	 */
 	public static String printText(TextDocument document) {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Paragraph paragraph : document.getParagraphs()) {
@@ -239,7 +298,13 @@ public final class Processor {
 		}
 		return stringBuilder.toString();
 	}
-	
+
+	/**
+	 * Print document in XML style
+	 * 
+	 * @param document
+	 * @return string
+	 */
 	public static String printXML(TextDocument document) {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Paragraph paragraph : document.getParagraphs()) {

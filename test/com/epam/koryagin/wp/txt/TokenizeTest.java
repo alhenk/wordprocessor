@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class TokenizerTest {
+public class TokenizeTest {
 
 	@Test
 	public void testParagraphDetector() {

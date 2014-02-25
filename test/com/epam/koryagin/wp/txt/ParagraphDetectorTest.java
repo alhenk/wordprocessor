@@ -2,6 +2,7 @@ package com.epam.koryagin.wp.txt;
 
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class ParagraphDetectorTest {
 	}
 	
 	@Test
-	public void testParagraphDetector() {
+	public void testParagraphDetector() throws ParseException {
 		List<String> paragraphs = new LinkedList<String>();
 		paragraphs = Processor.paragraphDetector(content);
 		assertEquals("Paragraph Detector", testParagraphs, new LinkedHashSet<String>(paragraphs));

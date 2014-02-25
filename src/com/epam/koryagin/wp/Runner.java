@@ -1,10 +1,10 @@
 package com.epam.koryagin.wp;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.log4j.Logger;
 
 import com.epam.koryagin.wp.txt.Processor;
@@ -17,12 +17,23 @@ public class Runner {
 
 	/**
 	 * 
-	 * @param args - file name with path
+	 * @param args
+	 *            - file name with path
+	 * @throws ParseException 
+	 * @throws Exception
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException  {
 		File file = null;
 		String fileNameRegex = properties.getString("regex.textfile");
-		Pattern fileNamePattern = Pattern.compile(fileNameRegex);
+
+		Pattern fileNamePattern;
+		try {
+			fileNamePattern = Pattern.compile(fileNameRegex);
+		} catch (IllegalArgumentException e) {
+			LOGGER.error("Sintax error in regex" + e);
+			throw new ParseException(fileNameRegex, 0);
+		}
+
 		Matcher fileNameMatcher;
 		if (args.length == 1) {
 			fileNameMatcher = fileNamePattern.matcher(args[0]);
@@ -37,12 +48,12 @@ public class Runner {
 			file = new File("h:\\JAVALAB\\wordprocessor\\sample_doc.txt");
 		}
 
-		TextDocument document = Processor.parser(file);
+		TextDocument document = Processor.parse(file);
 		if (document == null || document.getParagraphs().size() == 0) {
 			LOGGER.error("Failed to get document");
 		} else {
-			//LOGGER.info("\n"+Processor.printText(document));
-			LOGGER.info("\n"+Processor.printXML(document));
+			// LOGGER.info("\n"+Processor.printText(document));
+			LOGGER.info("\n" + Processor.printXML(document));
 		}
 	}
 }
