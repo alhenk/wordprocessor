@@ -2,7 +2,7 @@ package com.epam.koryagin.wp.txt;
 
 public class Token {
 	public static enum Type{
-		WORD, QUOTATION, PUNCTUATION, UNDEFINED;
+		WORD, QUOTATION_MARK, PUNCTUATION, UNDEFINED;
 	}
 	private String value;
 	private Type type;

@@ -7,9 +7,19 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Utility class for text processing
+ * purge(String)
+ * purge(LinkedList<String>)
+ * paragraphDetector(List<String>)
+ * tokenize(String txtLine)
+ * @author Koryagin
+ * @date 20140225
+ */
 public final class Processor {
+	// ResourceBundle is more convenient than Properties
 	public static ResourceBundle properties = ResourceBundle
-			.getBundle("com.epam.koryagin.wp.resources.paragraph");
+			.getBundle("com.epam.koryagin.wp.resources.regex");
 
 	private Processor() {
 	}
@@ -18,19 +28,33 @@ public final class Processor {
 	 * Remove all extra whitespace and replace it with one space
 	 * 
 	 * @param line
-	 * @return line
+	 *            input String
+	 * @return line output String
 	 */
 	public static String purge(String line) {
 		line = line.trim();
+		// multiple white spaces before full stop
 		line = line.replaceAll("\\s+\\.$", ".");
+		// multiple white spaces before comma
 		line = line.replaceAll("\\s+,$", ",");
+		// multiple white spaces before bang
 		line = line.replaceAll("\\s+!$", "!");
+		// multiple white spaces before ?
 		line = line.replaceAll("\\s+?$", "?");
+		// multiple white spaces
 		line = line.replaceAll("\\s+", " ");
+		// get rid of hyphen ¬ \u00ac in some txt files
 		line = line.replaceAll("\u00ac", "");
 		return line;
 	}
 
+	/**
+	 * Overloaded purge() for a list
+	 * 
+	 * @param content
+	 *            input list
+	 * @return content output list
+	 */
 	public static List<String> purge(LinkedList<String> content) {
 		String line;
 		for (int i = 0; i < content.size(); i++) {
@@ -41,8 +65,8 @@ public final class Processor {
 	}
 
 	/**
-	 * Paragraph detector return merges lines of content in one paragraph by the
-	 * empty string followed the block or end of line and full stop sign
+	 * Paragraph detector return merged lines of content in one paragraph by the
+	 * empty string followed the block or by the end of line and full stop sign
 	 * 
 	 * @param content
 	 * @return
@@ -50,11 +74,9 @@ public final class Processor {
 	public static List<String> paragraphDetector(List<String> content) {
 		List<String> paragraphs = new LinkedList<String>();
 		StringBuilder sb = new StringBuilder();
-		// String endOfParagraphRegex = "[!?\\.…]+[\"]*$";
 		String endOfParagraphRegex = properties
-				.getString("paragraph.separator");
-		// String emptyLineRegex = "(^[\\s]*$)";
-		String emptyLineRegex = properties.getString("paragraph.emptyline");
+				.getString("regex.paragraph.separator");
+		String emptyLineRegex = properties.getString("regex.emptyline");
 		Pattern endOfParagraphPattern = Pattern.compile(endOfParagraphRegex);
 		Pattern emptyLinePattern = Pattern.compile(emptyLineRegex);
 		Matcher endOfParagraph;
@@ -70,9 +92,8 @@ public final class Processor {
 				sb = new StringBuilder();
 			} else if (endOfParagraph.find()
 					|| iterator.nextIndex() == content.size()) {
-				sb.append(currentLine).append(" ");// append(" ") - for avoiding
-													// concatenation of two edge
-													// words
+				// append(" ") - for avoiding concatenation of two edge words
+				sb.append(currentLine).append(" ");
 				paragraphs.add(purge(sb.toString()));
 				sb = new StringBuilder();
 			} else {
@@ -82,11 +103,18 @@ public final class Processor {
 		return paragraphs;
 	}
 
+	/**
+	 * Parse sentence and tokens 
+	 * @param txtLine string line
+	 * @return paragraph list of Sentences
+	 */
 	public static List<Sentence> tokenize(String txtLine) {
-		final String tokenRegex = "(\\w+(?:[-\']\\w+)*|\'|“|”|\"|`|[-.(]+|\\S\\w*|[\\W]+\\d*[\\.,]\\d+)";
-		// String sentenceRegex = properties.getString("paragraph.sentence");
+		//final String tokenRegex = "(\\w+(?:[-\']\\w+)*|\'|“|”|\"|`|[-.(]+|\\S\\w*|[\\W]+\\d*[\\.,]\\d+)";
+		String tokenRegex = properties.getString("regex.token");
 		List<String> tokens = new LinkedList<String>();
-		Pattern quotationPattern = Pattern.compile("[\'\"“”`]");
+		String quotationRegex = properties.getString("regex.quotation");
+		//Pattern quotationPattern = Pattern.compile("[\'\"“”`]");
+		Pattern quotationPattern = Pattern.compile(quotationRegex);
 		Matcher quotationMatcher;
 		Pattern tokenPattern = Pattern.compile(tokenRegex);
 		Matcher tokenMatcher = tokenPattern.matcher(txtLine);
@@ -108,7 +136,7 @@ public final class Processor {
 					}
 					phrase = new LinkedList<Token>();
 					Token theToken = new Token(element);
-					theToken.setType(Token.Type.QUOTATION);
+					theToken.setType(Token.Type.QUOTATION_MARK);
 					phrase.add(theToken);
 					sentence = Sentence.create(phrase);
 					sentence.setType(Sentence.Type.QUOTATION);

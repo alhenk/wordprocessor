@@ -4,15 +4,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Paragraph {
-	public static enum Type{
-		HEADER, PARAGRAPH, UNDEFINED;
-	}
 	public static Paragraph create(List<Sentence> sentences) {
 		return new Paragraph(sentences);
 	}
 
 	private List<Sentence> sentences;
-	private Type type;
+
 	/**
 	 * Vague idea - default constructor should exist
 	 */
@@ -62,14 +59,4 @@ public class Paragraph {
 	public String toString() {
 		return "Paragraph [sentences=" + sentences + "]";
 	}
-
-	public Type getType() {
-		return type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-	
-	
 }

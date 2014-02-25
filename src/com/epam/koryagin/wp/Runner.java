@@ -16,23 +16,29 @@ public class Runner {
 		LinkedList<String> content = (LinkedList<String>) Processor
 				.purge(new LinkedList<String>(doc.getContent()));
 
-		System.out.println(content.size());
-		LinkedList<String> paragraphs = (LinkedList<String>) Processor
+		// System.out.println(content.size());
+		LinkedList<String> rawParagraphs = (LinkedList<String>) Processor
 				.paragraphDetector(content);
-		System.out.println(paragraphs.size());
+		// System.out.println(paragraphs.size());
 
-		for (String paragraph : paragraphs) {
+		StringBuilder stringBuilder = new StringBuilder();
+		for (String paragraph : rawParagraphs) {
 			List<Sentence> sentence = Processor.tokenize(paragraph);
-			System.out.println("<p>");
+			stringBuilder.append("<p>\n");
 			for (Sentence element : sentence) {
-				System.out.print("\t<sentence type=" + element.getType()
-						+ ">\n\t\t");
+				stringBuilder.append("\t<sentence type=")
+						.append(element.getType()).append(">\n");
 				for (Token elem : element.getSentence()) {
-					System.out.print(elem.getValue() + " ");
+					stringBuilder.append("\t\t<token type=")
+							.append(elem.getType()).append(">\n\t\t\t");
+					stringBuilder.append(elem.getValue());
+					stringBuilder.append("\n\t\t</token>\n");
 				}
-				System.out.println("\n\t</sentence>");
+				stringBuilder.append("\t</sentence>\n");
 			}
-			System.out.println("</p>\n");
+			stringBuilder.append("</p>\n");
 		}
+
+		System.out.println(stringBuilder.toString());
 	}
 }
