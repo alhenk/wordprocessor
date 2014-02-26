@@ -49,9 +49,6 @@ public class TokenizeTest {
 	@Test
 	public void testParagraphDetector() throws ParseException {
 		List<String> tokens = Processor.tokenize(line);
-//		for(String element:tokens){
-//			System.out.println("["+element+"]");
-//		}
 		assertEquals("Tokenize Test", testTokens, new LinkedHashSet<String>(tokens));
 	}
 }
