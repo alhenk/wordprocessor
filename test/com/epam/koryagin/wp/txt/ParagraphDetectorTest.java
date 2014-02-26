@@ -68,7 +68,7 @@ public class ParagraphDetectorTest {
 	
 	@Test
 	public void testParagraphDetector() throws ParseException {
-		List<String> paragraphs = new LinkedList<String>();
+		List<String> paragraphs;
 		paragraphs = Processor.paragraphDetector(content);
 		assertEquals("Paragraph Detector", testParagraphs, new LinkedHashSet<String>(paragraphs));
 	}

@@ -19,11 +19,12 @@ public class Runner {
 	 * 
 	 * @param args
 	 *            - file name with path
-	 * @throws ParseException 
+	 * @throws ParseException
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws ParseException  {
+	public static void main(String[] args) throws ParseException {
 		File file = null;
+		//File file = new File("h:\\JAVALAB\\wordprocessor\\sample_doc.txt");
 		String fileNameRegex = properties.getString("regex.textfile");
 
 		Pattern fileNamePattern;
@@ -52,8 +53,8 @@ public class Runner {
 		if (document == null || document.getParagraphs().size() == 0) {
 			LOGGER.error("Failed to get document");
 		} else {
-			// LOGGER.info("\n"+Processor.printText(document));
-			LOGGER.info("\n" + Processor.printXML(document));
+			LOGGER.info("\n" + Processor.printText(document));
+			//LOGGER.info("\n" + Processor.printXML(document));
 		}
 	}
 }

@@ -75,15 +75,16 @@ public final class Processor {
 	 * 
 	 * @param content
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
-	public static List<String> paragraphDetector(List<String> content) throws ParseException {
+	public static List<String> paragraphDetector(List<String> content)
+			throws ParseException {
 		List<String> paragraphs = new LinkedList<String>();
 		StringBuilder sb = new StringBuilder();
 		String endOfParagraphRegex = properties
 				.getString("regex.paragraph.separator");
 		String emptyLineRegex = properties.getString("regex.emptyline");
-		
+
 		Pattern endOfParagraphPattern;
 		try {
 			endOfParagraphPattern = Pattern.compile(endOfParagraphRegex);
@@ -91,7 +92,7 @@ public final class Processor {
 			LOGGER.error("Sintax error in end of paragraph regex" + e);
 			throw new ParseException(endOfParagraphRegex, 0);
 		}
-		
+
 		Pattern emptyLinePattern;
 		try {
 			emptyLinePattern = Pattern.compile(emptyLineRegex);
@@ -99,7 +100,7 @@ public final class Processor {
 			LOGGER.error("Sintax error in empty line regex" + e);
 			throw new ParseException(endOfParagraphRegex, 0);
 		}
-		
+
 		Matcher endOfParagraph;
 		Matcher emptyLine;
 		ListIterator<String> iterator = (ListIterator<String>) content
@@ -129,11 +130,12 @@ public final class Processor {
 	 * 
 	 * @param tokens
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
-	public static List<Sentence> breakSentence(List<String> tokens) throws ParseException {
+	public static List<Sentence> breakSentence(List<String> tokens)
+			throws ParseException {
 		String quotationRegex = properties.getString("regex.quotation");
-		
+
 		Pattern quotationPattern;
 		try {
 			quotationPattern = Pattern.compile(quotationRegex);
@@ -141,7 +143,7 @@ public final class Processor {
 			LOGGER.error("Sintax error in quotation regex" + e);
 			throw new ParseException(quotationRegex, 0);
 		}
-		
+
 		Matcher quotationMatcher;
 		Sentence sentence;
 		List<Sentence> sentences = new LinkedList<Sentence>();
@@ -264,10 +266,8 @@ public final class Processor {
 		if (doc == null || doc.getContent().size() == 0) {
 			return TextDocument.create(paragraphs);
 		}
-
 		LinkedList<String> content = (LinkedList<String>) Processor
 				.purge(new LinkedList<String>(doc.getContent()));
-
 		LinkedList<String> rawParagraphs = (LinkedList<String>) Processor
 				.paragraphDetector(content);
 		for (String element : rawParagraphs) {
