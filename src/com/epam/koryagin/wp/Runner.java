@@ -3,22 +3,26 @@ package com.epam.koryagin.wp;
 import java.io.File;
 import java.text.ParseException;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.epam.koryagin.wp.txt.Paragraph;
 import com.epam.koryagin.wp.txt.Processor;
-import com.epam.koryagin.wp.txt.Sentence;
 import com.epam.koryagin.wp.txt.TextDocument;
-import com.epam.koryagin.wp.txt.Token;
 
 public class Runner {
 	private static final Logger LOGGER = Logger.getLogger(Runner.class);
 	public static ResourceBundle properties = ResourceBundle
 			.getBundle("com.epam.koryagin.wp.resources.regex");
 
+	/**
+	 * Read filepath from arguments of main()
+	 * @param args
+	 * @return
+	 * @throws ParseException
+	 */
 	private static File getFile(String... args) throws ParseException {
 		File file = null;
 		// File file = new File("h:\\JAVALAB\\wordprocessor\\sample_txt.txt");
@@ -64,7 +68,9 @@ public class Runner {
 		} else {
 			Processor.assignTokenAttribute(document);
 			// LOGGER.info("\n" + Processor.printText(document));
-			LOGGER.info("\n" + Processor.printXML(document));
+			//LOGGER.info("\n" + Processor.printXML(document));
 		}
+		Set<String> words = Logic.pickupUniqWords(document);
+		System.out.println(words);
 	}
 }
