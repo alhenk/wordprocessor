@@ -324,4 +324,45 @@ public final class Processor {
 		}
 		return stringBuilder.toString();
 	}
+
+	public static void assignTokenAttribute(TextDocument document)
+			throws ParseException {
+		String numericRegex = properties.getString("regex.token.numeric");
+		String wordRegex = properties.getString("regex.token.word");
+		String punctuationRegex = properties
+				.getString("regex.token.punctuation");
+
+		Pattern numericPattern;
+		Pattern wordPattern;
+		Pattern punctuationPattern;
+		try {
+			wordPattern = Pattern.compile(wordRegex);
+			numericPattern = Pattern.compile(numericRegex);
+			punctuationPattern = Pattern.compile(punctuationRegex);
+		} catch (IllegalArgumentException e) {
+			LOGGER.error("Sintax error in token attribute regex" + e);
+			throw new ParseException(numericRegex, 0);
+		}
+		String value;
+		Matcher numericMatcher;
+		Matcher wordMatcher;
+		Matcher punctuationMatcher;
+		for (Paragraph paragraph : document.getParagraphs()) {
+			for (Sentence sentence : paragraph.getSentences()) {
+				for (Token token : sentence.getTokens()) {
+					value = token.getValue();
+					numericMatcher = numericPattern.matcher(value);
+					wordMatcher = wordPattern.matcher(value);
+					punctuationMatcher = punctuationPattern.matcher(value);
+					if (numericMatcher.matches()) {
+						token.setType(Token.Type.NUMERIC);
+					} else if (wordMatcher.matches()) {
+						token.setType(Token.Type.WORD);
+					} else if (punctuationMatcher.matches()) {
+						token.setType(Token.Type.PUNCTUATION);
+					}
+				}
+			}
+		}
+	}
 }

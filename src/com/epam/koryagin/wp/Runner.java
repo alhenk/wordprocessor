@@ -5,26 +5,23 @@ import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.log4j.Logger;
 
+import com.epam.koryagin.wp.txt.Paragraph;
 import com.epam.koryagin.wp.txt.Processor;
+import com.epam.koryagin.wp.txt.Sentence;
 import com.epam.koryagin.wp.txt.TextDocument;
+import com.epam.koryagin.wp.txt.Token;
 
 public class Runner {
 	private static final Logger LOGGER = Logger.getLogger(Runner.class);
 	public static ResourceBundle properties = ResourceBundle
 			.getBundle("com.epam.koryagin.wp.resources.regex");
 
-	/**
-	 * 
-	 * @param args
-	 *            - file name with path
-	 * @throws ParseException
-	 * @throws Exception
-	 */
-	public static void main(String[] args) throws ParseException {
+	private static File getFile(String... args) throws ParseException {
 		File file = null;
-		//File file = new File("h:\\JAVALAB\\wordprocessor\\sample_doc.txt");
+		// File file = new File("h:\\JAVALAB\\wordprocessor\\sample_txt.txt");
 		String fileNameRegex = properties.getString("regex.textfile");
 
 		Pattern fileNamePattern;
@@ -48,13 +45,26 @@ public class Runner {
 			LOGGER.info("No parameters, trying to run default txt file");
 			file = new File("h:\\JAVALAB\\wordprocessor\\sample_doc.txt");
 		}
+		return file;
+	}
 
+	/**
+	 * 
+	 * @param args
+	 *            - file name with path
+	 * @throws ParseException
+	 * @throws Exception
+	 */
+	public static void main(String[] args) throws ParseException {
+
+		File file = getFile(args);
 		TextDocument document = Processor.parse(file);
 		if (document == null || document.getParagraphs().size() == 0) {
 			LOGGER.error("Failed to get document");
 		} else {
-			LOGGER.info("\n" + Processor.printText(document));
-			//LOGGER.info("\n" + Processor.printXML(document));
+			Processor.assignTokenAttribute(document);
+			// LOGGER.info("\n" + Processor.printText(document));
+			LOGGER.info("\n" + Processor.printXML(document));
 		}
 	}
 }
