@@ -10,6 +10,8 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.epam.koryagin.wp.text.Processor;
+
 public class TokenizeTest {
 	private String line = "'I'm a Duchess,' she said."
 			+ "Man-made GAZ-24 and $180.5 a \"word\" by 3.62 5,45." + "I is .5.";

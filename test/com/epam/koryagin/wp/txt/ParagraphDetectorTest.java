@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.epam.koryagin.wp.text.Processor;
+
 public class ParagraphDetectorTest {
 	private List<String> content;
 	private Set<String> testParagraphs;

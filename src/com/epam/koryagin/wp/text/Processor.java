@@ -1,4 +1,4 @@
-package com.epam.koryagin.wp.txt;
+package com.epam.koryagin.wp.text;
 
 import java.io.File;
 import java.text.ParseException;

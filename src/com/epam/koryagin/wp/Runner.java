@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.epam.koryagin.wp.txt.Processor;
-import com.epam.koryagin.wp.txt.TextDocument;
+import com.epam.koryagin.wp.text.Processor;
+import com.epam.koryagin.wp.text.TextDocument;
 
 public class Runner {
 	private static final Logger LOGGER = Logger.getLogger(Runner.class);
