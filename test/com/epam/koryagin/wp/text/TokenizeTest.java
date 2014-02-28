@@ -1,4 +1,4 @@
-package com.epam.koryagin.wp.txt;
+package com.epam.koryagin.wp.text;
 
 import static org.junit.Assert.*;
 
@@ -10,7 +10,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.epam.koryagin.wp.text.Processor;
+import com.epam.koryagin.wp.parser.Processor;
 
 public class TokenizeTest {
 	private String line = "'I'm a Duchess,' she said."

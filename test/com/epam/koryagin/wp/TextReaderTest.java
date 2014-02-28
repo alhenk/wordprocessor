@@ -9,7 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.epam.koryagin.wp.text.Processor;
+import com.epam.koryagin.wp.parser.Processor;
 
 public class TextReaderTest extends TextReaderTestCase {
 	private TextReader doc;

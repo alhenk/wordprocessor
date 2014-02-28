@@ -1,57 +1,50 @@
-package com.epam.koryagin.wp.text;
+package com.epam.koryagin.wp.components.text;
 
 import java.io.Serializable;
+import java.util.Iterator;
+
+import com.epam.koryagin.wp.components.NullIterator;
+import com.epam.koryagin.wp.components.TextComponent;
 /**
  * Token the lowest hierarchy textual entity
- * 
+ * "leaf" node
  * @author Alexandr Koryagin
  *
  */
-public class Token implements Serializable, Comparable<Token> {
+public class Token extends TextComponent implements Serializable, Comparable<Token> {
 	private static final long serialVersionUID = 5160172131539910739L;
-
-	public static enum Type {
-		WORD, NUMERIC, QUOTATION_MARK, PUNCTUATION, UNDEFINED;
-	}
-
+	private static final String DEFAULT_TYPE = "TOKEN";
 	private String value;
-	private Type type;
+	private String type;
 
 	public Token() {
 		this.value = "";
-		this.type = Type.UNDEFINED;
+		this.type = DEFAULT_TYPE;
 	}
 
 	public Token(String value) {
 		this.value = value;
-		this.type = Type.UNDEFINED;
+		this.type = DEFAULT_TYPE;
+	}
+
+	@Override
+	public int compareTo(Token o) {
+		return value.compareTo(o.getValue());
 	}
 
 	public String getValue() {
 		return value;
 	}
-
+	
 	public void setValue(String value) {
 		this.value = value;
 	}
-
-	public Type getType() {
+	
+	@Override
+	public String getType(){
 		return type;
 	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
-		return result;
-	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -72,12 +65,25 @@ public class Token implements Serializable, Comparable<Token> {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
+
+	@Override
 	public String toString() {
 		return "Token [value=" + value + ", type=" + type + "]";
 	}
 
 	@Override
-	public int compareTo(Token o) {
-		return value.compareTo(o.getValue());
+	public String toOriginalString() {
+		return value + " ";
+	}
+	@Override
+	public Iterator<?> createIterator(){
+		return new NullIterator();
 	}
 }
