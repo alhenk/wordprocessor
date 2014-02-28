@@ -8,9 +8,9 @@ import com.epam.koryagin.wp.txt.Sentence;
 import com.epam.koryagin.wp.txt.TextDocument;
 import com.epam.koryagin.wp.txt.Token;
 
-public final class Logic {
+public final class TaskLogic {
 
-	private Logic() {
+	private TaskLogic() {
 	}
 
 	public static Set<String> pickupUniqWords(TextDocument document) {

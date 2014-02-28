@@ -1,6 +1,7 @@
 package com.epam.koryagin.wp;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -25,7 +26,7 @@ public class Runner {
 	 */
 	private static File getFile(String... args) throws ParseException {
 		File file = null;
-		// File file = new File("h:\\JAVALAB\\wordprocessor\\sample_txt.txt");
+		//File file = new File("h:\\JAVALAB\\wordprocessor\\sample_txt.txt");
 		String fileNameRegex = properties.getString("regex.textfile");
 
 		Pattern fileNamePattern;
@@ -57,9 +58,10 @@ public class Runner {
 	 * @param args
 	 *            - file name with path
 	 * @throws ParseException
+	 * @throws IOException 
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) throws ParseException, IOException {
 
 		File file = getFile(args);
 		TextDocument document = Processor.parse(file);
@@ -70,7 +72,10 @@ public class Runner {
 			// LOGGER.info("\n" + Processor.printText(document));
 			//LOGGER.info("\n" + Processor.printXML(document));
 		}
-		Set<String> words = Logic.pickupUniqWords(document);
+		Set<String> words = TaskLogic.pickupUniqWords(document);
 		System.out.println(words);
+//		FileWriter fr = new FileWriter("c://text_.txt");
+//		fr.write(Processor.printText(document));
+//		fr.close();
 	}
 }
