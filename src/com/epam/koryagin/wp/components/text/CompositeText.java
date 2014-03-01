@@ -35,12 +35,14 @@ public class CompositeText extends TextComponent implements Serializable,
 	public static CompositeText create(List<TextComponent> components) {
 		CompositeText compositeText = new CompositeText(components);
 		compositeText.name = TextComponentName.DEFAULT;
+		compositeText.type = DefaultType.DEFAULT;
 		return compositeText;
 	}
 
 	public static CompositeText create(TextComponentName name) {
 		CompositeText compositeText = new CompositeText();
 		compositeText.name = name;
+		compositeText.type = DefaultType.DEFAULT;
 		return compositeText;
 	}
 
@@ -105,6 +107,26 @@ public class CompositeText extends TextComponent implements Serializable,
 			sb.append(component.toOriginalString());
 		}
 		return sb.append("\n").toString();
+	}
+	@Override
+	public String printXML(){
+		StringBuilder sb = new StringBuilder();
+		Iterator<TextComponent> iterator = components.iterator();
+		while (iterator.hasNext()) {
+			TextComponent component = (TextComponent) iterator.next();
+			String name = DefaultType.DEFAULT.toString();
+			if(component.getName()!= null){
+					name = component.getName().toString();
+			}
+			String type = DefaultType.DEFAULT.toString();
+			if(component.getType()!= null){
+				type = component.getType().toString();
+			}
+			sb.append("\t<").append(name).append(" type=").append(type).append(">\n");
+			sb.append(component.printXML());
+			sb.append("\t</").append(name).append(">\n");
+		}
+		return sb.toString();
 	}
 
 	@Override

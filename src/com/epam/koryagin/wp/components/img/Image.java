@@ -98,7 +98,6 @@ public class Image extends TextComponent implements Serializable,
 
 	@Override
 	public Iterator<TextComponent> iterator() {
-		// TODO Auto-generated method stub
 		return new Iterator<TextComponent>(){
 
 			@Override
@@ -108,7 +107,6 @@ public class Image extends TextComponent implements Serializable,
 
 			@Override
 			public TextComponent next() {
-				// TODO Auto-generated method stub
 				return null;
 			}
 

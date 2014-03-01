@@ -41,6 +41,9 @@ public abstract class TextComponent implements Iterable<TextComponent> {
 	public String toOriginalString() {
 		throw new UnsupportedOperationException();
 	}
+	public String printXML(){
+		throw new UnsupportedOperationException();
+	}
 
 	public Iterator<?> createIterator() {
 		throw new UnsupportedOperationException();
