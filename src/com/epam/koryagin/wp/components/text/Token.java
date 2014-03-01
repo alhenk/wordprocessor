@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import com.epam.koryagin.wp.components.NullIterator;
 import com.epam.koryagin.wp.components.TextComponent;
+import com.epam.koryagin.wp.components.TextComponentType;
 /**
  * Token the lowest hierarchy textual entity
  * "leaf" node
@@ -13,18 +14,20 @@ import com.epam.koryagin.wp.components.TextComponent;
  */
 public class Token extends TextComponent implements Serializable, Comparable<Token> {
 	private static final long serialVersionUID = 5160172131539910739L;
-	private static final String DEFAULT_TYPE = "TOKEN";
 	private String value;
-	private String type;
+	private TextComponentName name;
+	private TextComponentType type;
 
 	public Token() {
 		this.value = "";
-		this.type = DEFAULT_TYPE;
+		this.name = TextComponentName.TOKEN;
+		this.type = TokenType.DEFAULT;
 	}
 
 	public Token(String value) {
 		this.value = value;
-		this.type = DEFAULT_TYPE;
+		this.name = TextComponentName.TOKEN;
+		this.type = TokenType.DEFAULT;
 	}
 
 	@Override
@@ -35,16 +38,27 @@ public class Token extends TextComponent implements Serializable, Comparable<Tok
 	public String getValue() {
 		return value;
 	}
-	
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
+		
 	@Override
-	public String getType(){
+	public TextComponentName getName() {
+		return name;
+	}
+	@Override
+	public void setName(TextComponentName name) {
+		this.name = name;
+	}
+	@Override
+	public TextComponentType getType() {
 		return type;
 	}
-	
+	@Override
+	public void setType(TextComponentType type) {
+		this.type = type;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -75,12 +89,12 @@ public class Token extends TextComponent implements Serializable, Comparable<Tok
 
 	@Override
 	public String toString() {
-		return "Token [value=" + value + ", type=" + type + "]";
+		return "Token [value=" + this.value + ", type=" + type + "]";
 	}
 
 	@Override
 	public String toOriginalString() {
-		return value + " ";
+		return value;
 	}
 	@Override
 	public Iterator<?> createIterator(){

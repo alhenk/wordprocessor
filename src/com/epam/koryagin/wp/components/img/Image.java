@@ -7,23 +7,25 @@ import java.util.List;
 
 import com.epam.koryagin.wp.components.NullIterator;
 import com.epam.koryagin.wp.components.TextComponent;
+import com.epam.koryagin.wp.components.TextComponentType;
 
 
 public class Image extends TextComponent implements Serializable,
 		Comparable<Image> {
 	private static final long serialVersionUID = -8967983048634036540L;
-	private static final String DEFAULT_TYPE = "IMAGE";
 	private ArrayList<Integer> pixels;
-	private String type;
+	private TextComponentType type;
+	private TextComponentName name;
 
 	public Image() {
 		this.pixels = new ArrayList<>();
-		this.type = DEFAULT_TYPE;
+		this.name = TextComponentName.IMAGE;
+		this.type = ImageType.UNDEFINED;
 	}
 
 	public Image(List<Integer> pixels) {
 		this.pixels = (ArrayList<Integer>) pixels;
-		this.type = DEFAULT_TYPE;
+		this.type = ImageType.UNDEFINED;
 	}
 
 	@Override
@@ -55,8 +57,12 @@ public class Image extends TextComponent implements Serializable,
 	}
 
 	@Override
-	public String getType() {
+	public TextComponentType getType() {
 		return type;
+	}
+	@Override
+	public TextComponentName getName() {
+		return name;
 	}
 
 	@Override

@@ -2,8 +2,8 @@ package com.epam.koryagin.wp.components;
 
 import java.util.Iterator;
 import java.util.Stack;
-import com.epam.koryagin.wp.components.text.Paragraph;
-import com.epam.koryagin.wp.components.text.Sentence;
+
+import com.epam.koryagin.wp.components.text.CompositeText;
 
 public class CompositeIterator implements Iterator<Object> {
 	Stack<Iterator<?>> stack = new Stack<Iterator<?>>();
@@ -31,7 +31,7 @@ public class CompositeIterator implements Iterator<Object> {
 		if (hasNext()) {
 			Iterator<?> iterator = (Iterator<?>) stack.peek();
 			TextComponent component = (TextComponent) iterator.next();
-			if (component instanceof Paragraph || component instanceof Sentence) {
+			if (component instanceof CompositeText) {
 				stack.push(component.createIterator());
 			}
 			return component;

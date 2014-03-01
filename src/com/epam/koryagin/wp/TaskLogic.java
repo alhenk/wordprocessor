@@ -3,12 +3,12 @@ package com.epam.koryagin.wp;
 import java.util.Iterator;
 
 import com.epam.koryagin.wp.components.TextComponent;
-import com.epam.koryagin.wp.components.text.TextDocument;
+import com.epam.koryagin.wp.components.text.CompositeText;
 
 public class TaskLogic {
-	TextDocument document;
+	CompositeText document;
 	
-	public TaskLogic(TextDocument document){
+	public TaskLogic(CompositeText document){
 		this.document = document;
 	}
 	

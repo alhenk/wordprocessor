@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public abstract class TextComponent {
 	public static enum TextComponentName {
-		DOCUMENT, PARAGRPAPH, SENTENCE, TOKEN, IMAGE;
+		DOCUMENT, PARAGRPAPH, SENTENCE, TOKEN, IMAGE, DEFAULT;
 	}
 
 	public abstract int hashCode();
@@ -22,8 +22,15 @@ public abstract class TextComponent {
 	public TextComponentName getName() {
 		throw new UnsupportedOperationException();
 	}
+	
+	public void setName(TextComponentName name) {
+		throw new UnsupportedOperationException();
+	}
 
 	public TextComponentType getType() {
+		throw new UnsupportedOperationException();
+	}
+	public void setType(TextComponentType type) {
 		throw new UnsupportedOperationException();
 	}
 

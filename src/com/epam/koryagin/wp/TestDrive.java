@@ -1,16 +1,15 @@
 package com.epam.koryagin.wp;
 
-import com.epam.koryagin.wp.components.text.Paragraph;
-import com.epam.koryagin.wp.components.text.Sentence;
-import com.epam.koryagin.wp.components.text.TextDocument;
+import com.epam.koryagin.wp.components.TextComponent.TextComponentName;
+import com.epam.koryagin.wp.components.text.CompositeText;
 import com.epam.koryagin.wp.components.text.Token;
 
 public class TestDrive {
 	public static void main(String[] args) {
-		TextDocument document = new TextDocument();
-		Paragraph paragraph = new Paragraph();
-		Sentence sentence = new Sentence();
-		//Token token = new Token("A");
+		CompositeText document = CompositeText.create(TextComponentName.DOCUMENT);
+		CompositeText paragraph = CompositeText.create(TextComponentName.PARAGRPAPH);
+		CompositeText sentence = CompositeText.create(TextComponentName.SENTENCE);
+
 		sentence.add(new Token("A"));
 		sentence.add(new Token(" "));
 		sentence.add(new Token("f"));
@@ -33,12 +32,17 @@ public class TestDrive {
 		sentence.add(new Token("."));
 		
 		paragraph.add(sentence);
+		paragraph.add(sentence);
 		document.add(paragraph);
 		
-//		TaskLogic task = new TaskLogic(document);
-//		System.out.println(task.print());
 		
 		System.out.println(document.toOriginalString());
 		
+//		StringBuilder sb = new StringBuilder();
+//		Iterator<TextComponent> tokens = sentence.getComponents().iterator();
+//		while (tokens.hasNext()) {
+//			sb.append(tokens.next().getComponent(0).toString());
+//		}
+//		System.out.println(sb.toString());
 	}
 }
