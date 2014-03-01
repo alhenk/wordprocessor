@@ -11,7 +11,7 @@ import com.epam.koryagin.wp.components.TextComponent;
 import com.epam.koryagin.wp.components.TextComponentType;
 
 public class CompositeText extends TextComponent implements Serializable,
-		Comparable<CompositeText> {
+		Comparable<CompositeText>, Iterable<TextComponent> {
 	private static final long serialVersionUID = -1751752160132151666L;
 	private List<TextComponent> components;
 	private TextComponentType type;
@@ -67,8 +67,8 @@ public class CompositeText extends TextComponent implements Serializable,
 	}
 
 	@Override
-	public TextComponent getComponent(int index) {
-		return (TextComponent) components.get(index);
+	public String getValue() {
+		return "";
 	}
 
 	@Override
@@ -167,5 +167,11 @@ public class CompositeText extends TextComponent implements Serializable,
 	public int compareTo(CompositeText o) {
 		return (this.hashCode() < o.hashCode()) ? -1 : ((this.hashCode() == o
 				.hashCode()) ? 0 : 1);
+	}
+
+	@Override
+	public Iterator<TextComponent> iterator() {
+		return this.components.iterator();
+		
 	}
 }

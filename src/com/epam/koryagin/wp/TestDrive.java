@@ -1,5 +1,6 @@
 package com.epam.koryagin.wp;
 
+import com.epam.koryagin.wp.components.TextComponent;
 import com.epam.koryagin.wp.components.TextComponent.TextComponentName;
 import com.epam.koryagin.wp.components.text.CompositeText;
 import com.epam.koryagin.wp.components.text.Token;
@@ -9,7 +10,12 @@ public class TestDrive {
 		CompositeText document = CompositeText.create(TextComponentName.DOCUMENT);
 		CompositeText paragraph = CompositeText.create(TextComponentName.PARAGRPAPH);
 		CompositeText sentence = CompositeText.create(TextComponentName.SENTENCE);
+		Token token = new Token("Zorro");
 
+		paragraph.add(token);
+		document.add(paragraph);
+		
+		paragraph = CompositeText.create(TextComponentName.PARAGRPAPH);
 		sentence.add(new Token("A"));
 		sentence.add(new Token(" "));
 		sentence.add(new Token("f"));
@@ -32,17 +38,42 @@ public class TestDrive {
 		sentence.add(new Token("."));
 		
 		paragraph.add(sentence);
+		paragraph.add(token);
 		paragraph.add(sentence);
 		document.add(paragraph);
+		//document.add(token);
 		
 		
-		System.out.println(document.toOriginalString());
+		//System.out.println(document.toOriginalString());
 		
-//		StringBuilder sb = new StringBuilder();
-//		Iterator<TextComponent> tokens = sentence.getComponents().iterator();
-//		while (tokens.hasNext()) {
-//			sb.append(tokens.next().getComponent(0).toString());
+//		Iterator<?> iterator = document.createIterator();
+//		System.out.println(iterator.hasNext());
+//		
+//		while (iterator.hasNext()) {
+//		TextComponent component = (TextComponent)iterator.next();
+//			try {
+//					//System.out.println(textComponent.toString());
+//				String name = component.getName().toString();
+//				String type = component.getName().toString();
+//				System.out.print("<"+ name +" type="+type+">");
+//				System.out.print("  " + component.getValue());
+//				System.out.print("</"+ name +">\n");
+//			} catch (UnsupportedOperationException e) {
+//			}
 //		}
-//		System.out.println(sb.toString());
+		
+		for(TextComponent par :document){
+			System.out.println(par.toString());
+			for (TextComponent sen : par){
+				System.out.println(sen.toString());
+				for(TextComponent tok : sen){
+					System.out.print(tok.getValue());
+				}
+				System.out.println();
+			}
+		}
+//		TaskLogic task = new TaskLogic(document);
+//		System.out.println(task.print());
+
 	}
 }

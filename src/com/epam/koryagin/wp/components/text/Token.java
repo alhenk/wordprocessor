@@ -100,4 +100,29 @@ public class Token extends TextComponent implements Serializable, Comparable<Tok
 	public Iterator<?> createIterator(){
 		return new NullIterator();
 	}
+
+	@Override
+	public Iterator<TextComponent> iterator() {
+		// TODO Auto-generated method stub
+		return new Iterator<TextComponent>(){
+
+			@Override
+			public boolean hasNext() {
+				return false;
+			}
+
+			@Override
+			public TextComponent next() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+				
+			}
+			
+		};
+	}
 }

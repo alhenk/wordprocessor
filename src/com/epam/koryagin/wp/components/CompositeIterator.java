@@ -9,6 +9,7 @@ public class CompositeIterator implements Iterator<Object> {
 	Stack<Iterator<?>> stack = new Stack<Iterator<?>>();
 
 	public CompositeIterator(Iterator<TextComponent> iterator) {
+		stack.push(iterator);
 	}
 
 	@Override
@@ -19,7 +20,7 @@ public class CompositeIterator implements Iterator<Object> {
 			Iterator<?> iterator = (Iterator<?>) stack.peek();
 			if (!iterator.hasNext()) {
 				stack.pop();
-				return hasNext();
+				return hasNext();//recursion
 			} else {
 				return true;
 			}

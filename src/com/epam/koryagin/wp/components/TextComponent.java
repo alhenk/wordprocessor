@@ -2,7 +2,7 @@ package com.epam.koryagin.wp.components;
 
 import java.util.Iterator;
 
-public abstract class TextComponent {
+public abstract class TextComponent implements Iterable<TextComponent> {
 	public static enum TextComponentName {
 		DOCUMENT, PARAGRPAPH, SENTENCE, TOKEN, IMAGE, DEFAULT;
 	}
@@ -15,7 +15,7 @@ public abstract class TextComponent {
 		throw new UnsupportedOperationException();
 	}
 
-	public TextComponent getComponent(int index) {
+	public String getValue() {
 		throw new UnsupportedOperationException();
 	}
 
