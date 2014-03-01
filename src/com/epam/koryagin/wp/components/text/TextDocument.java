@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.epam.koryagin.wp.components.CompositeIterator;
 import com.epam.koryagin.wp.components.TextComponent;
+import com.epam.koryagin.wp.components.TextComponentType;
 
 /**
  * Top hierarchy class of a textual entity consist of a list of paragraphs
@@ -18,10 +19,9 @@ import com.epam.koryagin.wp.components.TextComponent;
 public class TextDocument extends TextComponent implements Serializable,
 		Comparable<TextDocument> {
 	private static final long serialVersionUID = -4353199310763248838L;
-	private static final String DEFAULT_TYPE = "TEXT";
 	// composite node paragraphs
 	private List<TextComponent> paragraphs;
-	private String type;
+	private TextComponentName name;
 	private Iterator<?> iterator = null;
 
 	/**
@@ -29,7 +29,7 @@ public class TextDocument extends TextComponent implements Serializable,
 	 */
 	public TextDocument() {
 		this.paragraphs = new LinkedList<TextComponent>();
-		this.type = DEFAULT_TYPE;
+		this.name = TextComponentName.DOCUMENT;
 	}
 
 	/**
@@ -44,14 +44,14 @@ public class TextDocument extends TextComponent implements Serializable,
 	 */
 	public static TextDocument create(List<TextComponent> paragraphs) {
 		TextDocument textDocument = new TextDocument(paragraphs);
-		textDocument.type = DEFAULT_TYPE;
+		textDocument.name = TextComponentName.DOCUMENT;
 		return textDocument;
 	}
 
 	public static TextDocument create(List<TextComponent> paragraphs,
 			String type) {
 		TextDocument textDocument = new TextDocument(paragraphs);
-		textDocument.type = type;
+		textDocument.name = TextComponentName.DOCUMENT;
 		return textDocument;
 	}
 
@@ -98,8 +98,11 @@ public class TextDocument extends TextComponent implements Serializable,
 	}
 
 	@Override
-	public String getType() {
-		return type;
+	public TextComponentType getType() {
+		throw new UnsupportedOperationException();
+	}
+	public TextComponentName getName(){
+		return name;
 	}
 
 	@Override

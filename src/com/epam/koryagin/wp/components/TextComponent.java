@@ -2,33 +2,40 @@ package com.epam.koryagin.wp.components;
 
 import java.util.Iterator;
 
-public abstract class TextComponent{
+public abstract class TextComponent {
+	public static enum TextComponentName {
+		DOCUMENT, PARAGRPAPH, SENTENCE, TOKEN, IMAGE;
+	}
 
-	public void add(TextComponent component){
-		throw new UnsupportedOperationException();
-	}
-	
-	public abstract boolean equals(Object obj);
-	
-	public TextComponent getComponent(int index){
-		throw new UnsupportedOperationException();
-	}
-	
-	public String getType(){
-		throw new UnsupportedOperationException();
-	}
-	
 	public abstract int hashCode();
-	
-	public void remove(TextComponent component){
+
+	public abstract boolean equals(Object obj);
+
+	public void add(TextComponent component) {
 		throw new UnsupportedOperationException();
 	}
-	public String toOriginalString(){
+
+	public TextComponent getComponent(int index) {
 		throw new UnsupportedOperationException();
 	}
-	
-	public Iterator<?> createIterator(){
+
+	public TextComponentName getName() {
 		throw new UnsupportedOperationException();
 	}
-	
+
+	public TextComponentType getType() {
+		throw new UnsupportedOperationException();
+	}
+
+	public void remove(TextComponent component) {
+		throw new UnsupportedOperationException();
+	}
+
+	public String toOriginalString() {
+		throw new UnsupportedOperationException();
+	}
+
+	public Iterator<?> createIterator() {
+		throw new UnsupportedOperationException();
+	}
 }
