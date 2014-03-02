@@ -1,15 +1,22 @@
 package com.epam.koryagin.wp.text;
 
+import static org.junit.Assert.*;
+
 import java.text.ParseException;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.epam.koryagin.wp.components.text.Token;
+import com.epam.koryagin.wp.parser.Processor;
+
 public class TokenizeTest {
-//	private String line = "'I'm a Duchess,' she said."
-//			+ "Man-made GAZ-24 and $180.5 a \"word\" by 3.62 5,45." + "I is .5.";
+	private String line = "'I'm a Duchess,' she said."
+			+ "Man-made GAZ-24 and $180.5 a \"word\" by 3.62 5,45." + "I is .5.";
 	private Set<String> testTokens;
 
 	@Before
@@ -45,7 +52,11 @@ public class TokenizeTest {
 
 	@Test
 	public void testParagraphDetector() throws ParseException {
-//		List<String> tokens = Processor.tokenize(line);
-//		assertEquals("Tokenize Test", testTokens, new LinkedHashSet<String>(tokens));
+		List<Token> tokens = Processor.tokenize(line);
+		List<String> strings = new LinkedList<String>();
+		for(Token token: tokens){
+			strings.add(token.getValue());
+		}
+		assertEquals("Tokenize Test", testTokens, new LinkedHashSet<String>(strings));
 	}
 }

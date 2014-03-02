@@ -69,8 +69,8 @@ public class Runner {
 			LOGGER.error("Failed to get document");
 		} else {
 			// Processor.assignTokenAttribute(document);
-			LOGGER.info("\n" + Processor.printText(document));
-			// LOGGER.info("\n" + Processor.printXML(document));
+			//LOGGER.info("\n" + Processor.printText(document));
+			LOGGER.info("\n" + Processor.printXML(document));
 		}
 		// Set<String> words = TaskLogic.pickupUniqWords(document);
 		// System.out.println(words);

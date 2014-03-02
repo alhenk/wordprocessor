@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.epam.koryagin.wp.parser.Processor;
+
 public class ParagraphDetectorTest {
 	private List<String> content;
 	private Set<String> testParagraphs;
@@ -68,9 +70,8 @@ public class ParagraphDetectorTest {
 	
 	@Test
 	public void testParagraphDetector() throws ParseException {
-		fail("not implemented yet");
-//		List<String> paragraphs;
-//		paragraphs = Processor.paragraphDetector(content);
-//		assertEquals("Paragraph Detector", testParagraphs, new LinkedHashSet<String>(paragraphs));
+		List<String> paragraphs;
+		paragraphs = Processor.paragraphDetector(content);
+		assertEquals("Paragraph Detector", testParagraphs, new LinkedHashSet<String>(paragraphs));
 	}
 }

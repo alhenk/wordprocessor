@@ -178,11 +178,11 @@ public final class Processor {
 					continue;
 				}
 
-				if (!token.equals(System.lineSeparator())) {
+				if (!token.getValue().equals(System.lineSeparator())) {
 					phrase.add(token);
 				}
 
-				if (token.equals(System.lineSeparator())) {
+				if (token.getValue().equals(System.lineSeparator())) {
 					if (phrase.size() > 0) {
 						sentence = CompositeText.create(phrase,
 								TextComponentName.SENTENCE);
@@ -190,7 +190,7 @@ public final class Processor {
 						paragrpaph.add(sentence);
 					}
 					phrase = new LinkedList<TextComponent>();
-				} else if (token.equals(".")) {
+				} else if (token.getValue().equals(".")) {
 					if (phrase.size() > 0) {
 						sentence = CompositeText.create(phrase,
 								TextComponentName.SENTENCE);
@@ -199,7 +199,7 @@ public final class Processor {
 						paragrpaph.add(sentence);
 					}
 					phrase = new LinkedList<TextComponent>();
-				} else if (token.equals("?")) {
+				} else if (token.getValue().equals("?")) {
 					if (phrase.size() > 0) {
 						sentence = CompositeText.create(phrase,
 								TextComponentName.SENTENCE);
@@ -207,7 +207,7 @@ public final class Processor {
 						paragrpaph.add(sentence);
 					}
 					phrase = new LinkedList<TextComponent>();
-				} else if (token.equals("!")) {
+				} else if (token.getValue().equals("!")) {
 					if (phrase.size() > 0) {
 						sentence = CompositeText.create(phrase,
 								TextComponentName.SENTENCE);
@@ -221,11 +221,10 @@ public final class Processor {
 		return paragrpaph;
 	}
 
-	//
 	// public static List<String> breakSentence(String txtLine) {
 	// return null;
 	// }
-	//
+
 	/**
 	 * Parse sentence and tokens
 	 * 
@@ -278,7 +277,7 @@ public final class Processor {
 
 		TextReader doc = new TextReader(file);
 		if (doc == null || doc.getContent().size() == 0) {
-			return CompositeText.create(paragraphs, TextComponentName.DEFAULT);
+			return CompositeText.create(paragraphs);
 		}
 		LinkedList<String> content = (LinkedList<String>) purge(new LinkedList<String>(
 				doc.getContent()));
@@ -287,7 +286,7 @@ public final class Processor {
 			TextComponent paragraph = tokenizer(rawParagraph);
 			paragraphs.add(paragraph);
 		}
-		return CompositeText.create(paragraphs);
+		return CompositeText.create(paragraphs,TextComponentName.DOCUMENT);
 	}
 
 	/**

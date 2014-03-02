@@ -2,10 +2,14 @@ package com.epam.koryagin.wp;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Set;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.epam.koryagin.wp.parser.Processor;
 
 public class TextReaderTest extends TextReaderTestCase {
 	private TextReader doc;
@@ -35,14 +39,14 @@ public class TextReaderTest extends TextReaderTestCase {
 	@Test
 	public void testTxtDocument() throws IOException {
 		assertEquals("Test getLine()", "First line.", doc.getLine(0));
-//		assertEquals("Test purge white spaces in single line",
-//				"Second line with white spaces.",
-//				Processor.purge(doc.getLine(1)));
-//		assertEquals(
-//				"Test purge white spaces in collection content",
-//				content,
-//				new LinkedHashSet<String>(Processor.purge(new LinkedList<String>(doc
-//						.getContent()))));
+		assertEquals("Test purge white spaces in single line",
+				"Second line with white spaces.",
+				Processor.purge(doc.getLine(1)));
+		assertEquals(
+				"Test purge white spaces in collection content",
+				content,
+				new LinkedHashSet<String>(Processor.purge(new LinkedList<String>(doc
+						.getContent()))));
 	}
 
 }
