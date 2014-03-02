@@ -39,11 +39,11 @@ public class TextReaderTest extends TextReaderTestCase {
 	@Test
 	public void testTxtDocument() throws IOException {
 		assertEquals("Test getLine()", "First line.", doc.getLine(0));
-		assertEquals("Test purge white spaces in single line",
+		assertEquals("Test clean white spaces in single line",
 				"Second line with white spaces.",
 				Parser.cleanWhiteSpaces(doc.getLine(1)));
 		assertEquals(
-				"Test purge white spaces in collection content",
+				"Test clean white spaces in collection content",
 				content,
 				new LinkedHashSet<String>(Parser.cleanWhiteSpaces(new LinkedList<String>(doc
 						.getContent()))));

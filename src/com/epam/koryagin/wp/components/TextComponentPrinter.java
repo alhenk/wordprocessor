@@ -1,7 +1,11 @@
 package com.epam.koryagin.wp.components;
 
 import com.epam.koryagin.wp.components.text.DefaultType;
-
+/**
+ * Utility class for printing Composite Text
+ * 
+ * @author Alexandr Koryagin
+ */
 public final class TextComponentPrinter {
 
 	private TextComponentPrinter(){
@@ -41,7 +45,4 @@ public final class TextComponentPrinter {
 		sb.append("</").append(name).append(">");
 		return sb.toString();
 	}
-	
-	
-	
 }

@@ -7,9 +7,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.log4j.Logger;
-
 import com.epam.koryagin.wp.components.TextComponentPrinter;
 import com.epam.koryagin.wp.components.text.CompositeText;
 import com.epam.koryagin.wp.parser.Parser;
@@ -28,7 +26,6 @@ public class Runner {
 	 */
 	private static File getFile(String... args) throws ParseException {
 		File file = null;
-		// File file = new File("h:\\JAVALAB\\wordprocessor\\sample_txt.txt");
 		String fileNameRegex = properties.getString("regex.textfile");
 
 		Pattern fileNamePattern;
@@ -47,10 +44,10 @@ public class Runner {
 			}
 		} else if (args.length > 1) {
 			LOGGER.info("Too much parameters, trying to run default txt file");
-			file = new File("h:\\JAVALAB\\wordprocessor\\sample_doc.txt");
+			file = null;
 		} else {
 			LOGGER.info("No parameters, trying to run default txt file");
-			file = new File("h:\\JAVALAB\\wordprocessor\\sample_doc.txt");
+			file = null;
 		}
 		return file;
 	}
@@ -66,6 +63,10 @@ public class Runner {
 	public static void main(String[] args) throws ParseException, IOException {
 
 		File file = getFile(args);
+		if (file == null){
+			LOGGER.error("Missing File Name argument");
+			throw new IllegalArgumentException("Missing File Name argument");
+		}
 		CompositeText document = (CompositeText) Parser.parse(file);
 		if (document == null || document.getComponents().size() == 0) {
 			LOGGER.error("Failed to get document");
@@ -81,14 +82,18 @@ public class Runner {
 		LOGGER.info("TASK 0:");
 		LOGGER.info("All unique words (" + words.size() + ") in the document ");
 		LOGGER.info(words);
-		// Task 2
-		// Print out all sentences in ascending order of words count
+		/**
+		 *  Task 2
+		 *  Print out all sentences in ascending order of words count
+		 */
 		LOGGER.info("TASK 2:");
 		LOGGER.info(TaskLogic.sortSentencesInAsceascendingOrderOfWordCount(document));
 
-		// Task 4
-		// Find and print all unique words of a given length
-		// in interrogative sentences
+		/** 
+		 * Task 4
+		 * Find and print all unique words of a given length
+		 * in interrogative sentences
+		 */
 		int wordLength = 3;
 		words = TaskLogic.findWordsInterrogative(document, wordLength);
 		LOGGER.info("TASK 4:");

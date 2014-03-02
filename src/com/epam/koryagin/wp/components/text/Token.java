@@ -8,7 +8,8 @@ import com.epam.koryagin.wp.components.TextComponent;
 import com.epam.koryagin.wp.components.TextComponentType;
 
 /**
- * Token the lowest hierarchy textual entity "leaf" node
+ * Token is a homogeneous component,
+ * "leaf" node in composite pattern model
  * 
  * @author Alexandr Koryagin
  * 

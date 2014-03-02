@@ -9,7 +9,15 @@ import com.epam.koryagin.wp.components.NullIterator;
 import com.epam.koryagin.wp.components.TextComponent;
 import com.epam.koryagin.wp.components.TextComponentType;
 
-
+/**
+ * Image is a homogeneous component,
+ * "leaf" node in composite pattern model
+ * for image elements in text documents
+ * created for generalization of the task
+ * 
+ * @author Alexandr Koryagin
+ *
+ */
 public class Image extends TextComponent implements Serializable,
 		Comparable<Image> {
 	private static final long serialVersionUID = -8967983048634036540L;

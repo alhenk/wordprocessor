@@ -2,7 +2,12 @@ package com.epam.koryagin.wp.components;
 
 import java.util.Iterator;
 import java.util.List;
-
+/**
+ * Abstract class that provides interface
+ * for composite and homogeneous components
+ * @author Alexandr Koryagin
+ *
+ */
 public abstract class TextComponent implements Iterable<TextComponent> {
 	public static enum TextComponentName {
 		DOCUMENT, PARAGRPAPH, SENTENCE, TOKEN, IMAGE, DEFAULT;

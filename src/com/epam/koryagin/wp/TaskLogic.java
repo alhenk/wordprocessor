@@ -7,32 +7,38 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
+
 import com.epam.koryagin.wp.components.TextComponent;
 import com.epam.koryagin.wp.components.TextComponent.TextComponentName;
 import com.epam.koryagin.wp.components.text.CompositeText;
 import com.epam.koryagin.wp.components.text.SentenceType;
 import com.epam.koryagin.wp.components.text.TokenType;
+import com.epam.koryagin.wp.parser.Parser;
 
-public class TaskLogic {
-	CompositeText document;
-
-	public TaskLogic(CompositeText document) {
-		this.document = document;
+/**
+ * Logic for JAVALAB TASK2
+ * @author Alexandr Koryagin
+ */
+public final class TaskLogic {
+	private static final Logger LOGGER = Logger.getLogger(Parser.class);
+	private TaskLogic() {
 	}
 
-	public String print() {
-		Iterator<?> iterator = document.createIterator();
-		StringBuilder sb = new StringBuilder();
-
-		while (iterator.hasNext()) {
-			TextComponent component = (TextComponent) iterator.next();
-			sb.append(component.toOriginalString());
-		}
-		return sb.toString();
-	}
-
+	/**
+	 * Task 4
+	 * Find and print all unique words of a given length
+	 * in interrogative sentences
+	 * @param document
+	 * @param wordlength
+	 * @return words - a set of words
+	 */
 	public static Set<String> findWordsInterrogative(CompositeText document,
 			int wordlength) {
+		if (wordlength < 0){
+			LOGGER.error("Word length parameter must be positive");
+			throw new IllegalArgumentException("Word length parameter must be positive");
+		}
 		Set<String> words = new TreeSet<String>();
 		Iterator<?> iterator = document.createIterator();
 		while (iterator.hasNext()) {
@@ -52,6 +58,12 @@ public class TaskLogic {
 		return words;
 	}
 
+	/**
+	 * Task 2
+	 * Print out all sentences in ascending order of words count
+	 * @param document
+	 * @return
+	 */
 	public static String sortSentencesInAsceascendingOrderOfWordCount(
 			CompositeText document) {
 		List<TextComponent> sentences = new ArrayList<TextComponent>();
@@ -70,6 +82,12 @@ public class TaskLogic {
 		return sb.toString();
 	}
 
+	/**
+	 * Task 0
+	 * Find all unique words in the document
+	 * @param document
+	 * @return
+	 */
 	public static Set<String> pickupUniqueWords(CompositeText document) {
 		Set<String> words = new TreeSet<String>();
 		Iterator<?> iterator = document.createIterator();

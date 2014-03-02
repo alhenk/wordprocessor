@@ -4,7 +4,12 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import com.epam.koryagin.wp.components.text.CompositeText;
-
+/**
+ * Recursive iterator for composite text
+ * 
+ * @author Alexandr Koryagin
+ *
+ */
 public class CompositeIterator implements Iterator<Object> {
 	Stack<Iterator<?>> stack = new Stack<Iterator<?>>();
 

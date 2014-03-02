@@ -9,7 +9,12 @@ import java.util.List;
 import com.epam.koryagin.wp.components.CompositeIterator;
 import com.epam.koryagin.wp.components.TextComponent;
 import com.epam.koryagin.wp.components.TextComponentType;
-
+/**
+ * Class of composite collection
+ * Document, Paragraph, Sentence
+ * @author Alexandr Koryagin
+ *
+ */
 public class CompositeText extends TextComponent implements Serializable,
 		Comparable<CompositeText>, Iterable<TextComponent> {
 	private static final long serialVersionUID = -1751752160132151666L;
@@ -62,15 +67,15 @@ public class CompositeText extends TextComponent implements Serializable,
 		return compositeText;
 	}
 
+	public void setComponents(List<TextComponent> components) {
+		this.components = components;
+	}
+	
 	@Override
 	public List<TextComponent> getComponents() {
 		// return (List<TextComponent>) Collections
 		// .unmodifiableCollection(components);
 		return components;
-	}
-
-	public void setComponents(List<TextComponent> components) {
-		this.components = components;
 	}
 
 	@Override

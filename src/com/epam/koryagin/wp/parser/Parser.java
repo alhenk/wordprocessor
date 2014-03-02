@@ -22,8 +22,7 @@ import com.epam.koryagin.wp.components.text.Token;
 import com.epam.koryagin.wp.components.text.TokenType;
 
 /**
- * Utility class for text processing purge(String) purge(LinkedList<String>)
- * paragraphDetector(List<String>) tokenize(String txtLine)
+ * Utility class for text parsing
  * 
  * @author Alexandr Koryagin
  * @date 20140225
@@ -220,25 +219,26 @@ public final class Parser {
 		}
 		return paragrpaph;
 	}
-
-	// public static List<String> breakSentence(String txtLine) {
+	// TODO Overloaded method for splitting sentences 
+	// by the end of sentence regex
+	// public static List<String> breakSentence(String textLine) {
 	// return null;
 	// }
 
 	/**
-	 * Parse sentence and tokens
+	 * Parse text line and return composite text
 	 * 
 	 * @param txtLine
 	 *            string line
-	 * @return paragraph list of Sentences
+	 * @return paragraph composite text (a list of Sentences)
 	 * @throws ParseException
 	 */
-	public static TextComponent parse(String txtLine) throws ParseException {
-		return breakSentence(tokenize(txtLine));
+	public static TextComponent parse(String textLine) throws ParseException {
+		return breakSentence(tokenize(textLine));
 	}
 
 	/**
-	 * Parse tokens
+	 * Parse text line and return list of tokens
 	 * 
 	 * @param textLine
 	 * @return list of String
@@ -265,7 +265,7 @@ public final class Parser {
 	}
 
 	/**
-	 * Create TextDocument from the file
+	 * Create Composite Text from a file
 	 * 
 	 * @param file
 	 * @return
@@ -283,7 +283,13 @@ public final class Parser {
 		parse(content);
 		return parse(content);
 	}
-	
+	/**
+	 * Create Composite Text from a list of Strings
+	 * 
+	 * @param content
+	 * @return
+	 * @throws ParseException
+	 */
 	public static TextComponent parse(List<String> content) throws ParseException {
 		List<TextComponent> paragraphs = new LinkedList<TextComponent>();
 		LinkedList<String> rawParagraphs = (LinkedList<String>) paragraphDetector(content);
@@ -296,6 +302,12 @@ public final class Parser {
 		return document;
 	}
 
+	/**
+	 * Assign type of tokens by word, punctuation, numeric regex
+	 * 
+	 * @param document
+	 * @throws ParseException
+	 */
 	public static void assignTokenAttribute(TextComponent document)
 			throws ParseException {
 		String numericRegex = properties.getString("regex.token.numeric");
