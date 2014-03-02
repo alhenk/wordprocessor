@@ -2,6 +2,7 @@ package com.epam.koryagin.wp.parser;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -261,7 +262,6 @@ public final class Processor {
 			tokens.add(new Token(tokenMatcher.group()));
 		}
 		tokens.add(new Token(System.lineSeparator()));
-
 		return tokens;
 	}
 
@@ -286,7 +286,9 @@ public final class Processor {
 			TextComponent paragraph = tokenizer(rawParagraph);
 			paragraphs.add(paragraph);
 		}
-		return CompositeText.create(paragraphs,TextComponentName.DOCUMENT);
+		TextComponent document = CompositeText.create(paragraphs,TextComponentName.DOCUMENT);
+		assignTokenAttribute(document);
+		return document;
 	}
 
 	/**
@@ -324,44 +326,46 @@ public final class Processor {
 		return sb.toString();
 	}
 
-//	public static void assignTokenAttribute(TextComponent document)
-//			throws ParseException {
-//		String numericRegex = properties.getString("regex.token.numeric");
-//		String wordRegex = properties.getString("regex.token.word");
-//		String punctuationRegex = properties
-//				.getString("regex.token.punctuation");
-//
-//		Pattern numericPattern;
-//		Pattern wordPattern;
-//		Pattern punctuationPattern;
-//		try {
-//			wordPattern = Pattern.compile(wordRegex);
-//			numericPattern = Pattern.compile(numericRegex);
-//			punctuationPattern = Pattern.compile(punctuationRegex);
-//		} catch (IllegalArgumentException e) {
-//			LOGGER.error("Sintax error in token attribute regex" + e);
-//			throw new ParseException(numericRegex, 0);
-//		}
-//		String value;
-//		Matcher numericMatcher;
-//		Matcher wordMatcher;
-//		Matcher punctuationMatcher;
-//		for (Paragraph paragraph : document.getParagraphs()) {
-//			for (Sentence sentence : paragraph.getSentences()) {
-//				for (Token token : sentence.getTokens()) {
-//					value = token.getValue();
-//					numericMatcher = numericPattern.matcher(value);
-//					wordMatcher = wordPattern.matcher(value);
-//					punctuationMatcher = punctuationPattern.matcher(value);
-//					if (numericMatcher.matches()) {
-//						token.setType(Token.Type.NUMERIC);
-//					} else if (wordMatcher.matches()) {
-//						token.setType(Token.Type.WORD);
-//					} else if (punctuationMatcher.matches()) {
-//						token.setType(Token.Type.PUNCTUATION);
-//					}
-//				}
-//			}
-//		}
-//	}
+	public static void assignTokenAttribute(TextComponent document)
+			throws ParseException {
+		String numericRegex = properties.getString("regex.token.numeric");
+		String wordRegex = properties.getString("regex.token.word");
+		String punctuationRegex = properties
+				.getString("regex.token.punctuation");
+
+		Pattern numericPattern;
+		Pattern wordPattern;
+		Pattern punctuationPattern;
+		try {
+			wordPattern = Pattern.compile(wordRegex);
+			numericPattern = Pattern.compile(numericRegex);
+			punctuationPattern = Pattern.compile(punctuationRegex);
+		} catch (IllegalArgumentException e) {
+			LOGGER.error("Sintax error in token attribute regex" + e);
+			throw new ParseException(numericRegex, 0);
+		}
+		String value;
+		Matcher numericMatcher;
+		Matcher wordMatcher;
+		Matcher punctuationMatcher;
+		
+		
+		Iterator<?> iterator= document.createIterator();
+		while(iterator.hasNext()){
+			TextComponent token = (TextComponent)iterator.next();
+			if(token.getName().equals(TextComponentName.TOKEN)){
+				value = token.getValue();
+				numericMatcher = numericPattern.matcher(value);
+				wordMatcher = wordPattern.matcher(value);
+				punctuationMatcher = punctuationPattern.matcher(value);
+				if (numericMatcher.matches()) {
+					token.setType(TokenType.NUMERIC);
+				} else if (wordMatcher.matches()) {
+					token.setType(TokenType.WORD);
+				} else if (punctuationMatcher.matches()) {
+					token.setType(TokenType.PUNCTUATION);
+				}
+			}
+		}
+	}
 }

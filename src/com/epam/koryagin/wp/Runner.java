@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,12 +69,13 @@ public class Runner {
 		if (document == null || document.getComponents().size() == 0) {
 			LOGGER.error("Failed to get document");
 		} else {
-			// Processor.assignTokenAttribute(document);
 			//LOGGER.info("\n" + Processor.printText(document));
-			LOGGER.info("\n" + Processor.printXML(document));
+			//LOGGER.info("\n" + Processor.printXML(document));
 		}
-		// Set<String> words = TaskLogic.pickupUniqWords(document);
-		// System.out.println(words);
+
+		Set<String> words = TaskLogic.pickupUniqWords(document);
+		System.out.println(words);
+		System.out.println(words.size());
 		// FileWriter fr = new FileWriter("c://text_.txt");
 		// fr.write(Processor.printText(document));
 		// fr.close();

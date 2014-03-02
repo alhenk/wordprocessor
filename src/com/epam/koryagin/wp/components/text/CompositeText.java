@@ -137,9 +137,9 @@ public class CompositeText extends TextComponent implements Serializable,
 
 	@Override
 	public Iterator<?> createIterator() {
-		if (iterator == null) {
-			iterator = new CompositeIterator(components.iterator());
-		}
+		//if (iterator == null) {
+		iterator = new CompositeIterator(components.iterator());
+		//}
 		return iterator;
 	}
 

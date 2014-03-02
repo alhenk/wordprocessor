@@ -1,9 +1,13 @@
 package com.epam.koryagin.wp;
 
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.epam.koryagin.wp.components.TextComponent;
+import com.epam.koryagin.wp.components.TextComponent.TextComponentName;
 import com.epam.koryagin.wp.components.text.CompositeText;
+import com.epam.koryagin.wp.components.text.TokenType;
 
 public class TaskLogic {
 	CompositeText document;
@@ -21,5 +25,21 @@ public class TaskLogic {
 			sb.append(component.toOriginalString());
 		}
 		return sb.toString();
+	}
+	
+	public static Set<String> pickupUniqWords(CompositeText document) {
+		Set<String> words = new TreeSet<String>();
+		Iterator<?> iterator= document.createIterator();
+		while(iterator.hasNext()){
+			TextComponent token = (TextComponent)iterator.next();
+			if(token.getName().equals(TextComponentName.TOKEN)){
+				if (token.getType().equals(TokenType.WORD)) {
+					String value = token.getValue();
+					words.add(value);
+
+				}
+			}
+		}
+		return words;
 	}
 }
