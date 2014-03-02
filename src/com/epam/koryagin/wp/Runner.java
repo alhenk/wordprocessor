@@ -69,16 +69,25 @@ public class Runner {
 		if (document == null || document.getComponents().size() == 0) {
 			LOGGER.error("Failed to get document");
 		} else {
-			//LOGGER.info("\n" + Processor.printText(document));
-			//LOGGER.info("\n" + Processor.printXML(document));
+			LOGGER.info("\n" + Processor.printText(document));
+			// LOGGER.info("\n" + Processor.printXML(document));
 		}
 
-		Set<String> words = TaskLogic.pickupUniqWords(document);
-		System.out.println(words);
-		System.out.println(words.size());
-		// FileWriter fr = new FileWriter("c://text_.txt");
-		// fr.write(Processor.printText(document));
-		// fr.close();
+		Set<String> words;
+		//Task 0
+		//Find all unique words in the document
+		words = TaskLogic.pickupUniqueWords(document);
+		LOGGER.info("TASK 0:");
+		LOGGER.info("All unique words (" + words.size() + ") in the document ");
+		LOGGER.info(words);
 
+		// Task 4
+		// Find and print all unique words of a given length
+		// in interrogative sentences
+		int wordLength = 3;
+		words = TaskLogic.findWordsInterrogative(document, wordLength);
+		LOGGER.info("TASK 4:");
+		LOGGER.info("The unique words of a given length = " + wordLength + " "
+				+ words);
 	}
 }
