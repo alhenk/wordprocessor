@@ -15,6 +15,7 @@ public class TaskLogic {
 	public String print(){
 		Iterator<?> iterator= document.createIterator();
 		StringBuilder sb = new StringBuilder();
+		
 		while(iterator.hasNext()){
 			TextComponent component = (TextComponent)iterator.next();
 			sb.append(component.toOriginalString());

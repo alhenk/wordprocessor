@@ -305,7 +305,7 @@ public final class Processor {
 		if(document.getType()!= null){
 			type = document.getType().toString();
 		}
-		sb.append("<").append(name).append(" type=").append(type).append(">\n");
+		sb.append("<").append(name).append(" type=\"").append(type).append("\">\n");
 		sb.append(document.printXML());
 		sb.append("</").append(name).append(">");
 		return sb.toString();

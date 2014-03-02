@@ -122,7 +122,7 @@ public class CompositeText extends TextComponent implements Serializable,
 			if(component.getType()!= null){
 				type = component.getType().toString();
 			}
-			sb.append("\t<").append(name).append(" type=").append(type).append(">\n");
+			sb.append("\t<").append(name).append(" type=\"").append(type).append("\">\n");
 			sb.append(component.printXML());
 			sb.append("\t</").append(name).append(">\n");
 		}
