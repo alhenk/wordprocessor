@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.epam.koryagin.wp.parser.Processor;
+import com.epam.koryagin.wp.parser.Parser;
 
 public class ParagraphDetectorTest {
 	private List<String> content;
@@ -71,7 +71,7 @@ public class ParagraphDetectorTest {
 	@Test
 	public void testParagraphDetector() throws ParseException {
 		List<String> paragraphs;
-		paragraphs = Processor.paragraphDetector(content);
+		paragraphs = Parser.paragraphDetector(content);
 		assertEquals("Paragraph Detector", testParagraphs, new LinkedHashSet<String>(paragraphs));
 	}
 }

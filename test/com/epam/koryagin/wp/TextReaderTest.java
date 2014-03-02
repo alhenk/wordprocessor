@@ -9,7 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.epam.koryagin.wp.parser.Processor;
+import com.epam.koryagin.wp.parser.Parser;
 
 public class TextReaderTest extends TextReaderTestCase {
 	private TextReader doc;
@@ -41,11 +41,11 @@ public class TextReaderTest extends TextReaderTestCase {
 		assertEquals("Test getLine()", "First line.", doc.getLine(0));
 		assertEquals("Test purge white spaces in single line",
 				"Second line with white spaces.",
-				Processor.purge(doc.getLine(1)));
+				Parser.cleanWhiteSpaces(doc.getLine(1)));
 		assertEquals(
 				"Test purge white spaces in collection content",
 				content,
-				new LinkedHashSet<String>(Processor.purge(new LinkedList<String>(doc
+				new LinkedHashSet<String>(Parser.cleanWhiteSpaces(new LinkedList<String>(doc
 						.getContent()))));
 	}
 

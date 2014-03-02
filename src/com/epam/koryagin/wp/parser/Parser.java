@@ -16,7 +16,6 @@ import com.epam.koryagin.wp.TextReader;
 import com.epam.koryagin.wp.components.TextComponent;
 import com.epam.koryagin.wp.components.TextComponent.TextComponentName;
 import com.epam.koryagin.wp.components.text.CompositeText;
-import com.epam.koryagin.wp.components.text.DefaultType;
 import com.epam.koryagin.wp.components.text.ParagraphType;
 import com.epam.koryagin.wp.components.text.SentenceType;
 import com.epam.koryagin.wp.components.text.Token;
@@ -29,13 +28,13 @@ import com.epam.koryagin.wp.components.text.TokenType;
  * @author Alexandr Koryagin
  * @date 20140225
  */
-public final class Processor {
-	private static final Logger LOGGER = Logger.getLogger(Processor.class);
+public final class Parser {
+	private static final Logger LOGGER = Logger.getLogger(Parser.class);
 	// ResourceBundle is more convenient than Properties
 	public static ResourceBundle properties = ResourceBundle
 			.getBundle("com.epam.koryagin.wp.resources.regex");
 
-	private Processor() {
+	private Parser() {
 	}
 
 	/**
@@ -45,7 +44,7 @@ public final class Processor {
 	 *            input String
 	 * @return line output String
 	 */
-	public static String purge(String line) {
+	public static String cleanWhiteSpaces(String line) {
 		line = line.trim();
 		// multiple white spaces before full stop
 		line = line.replaceAll("\\s+\\.$", ".");
@@ -57,22 +56,22 @@ public final class Processor {
 		line = line.replaceAll("\\s+?$", "?");
 		// multiple white spaces
 		line = line.replaceAll("\\s+", " ");
-		// get rid of hyphen ¬ \u00ac in some txt files
+		// get rid of hyphen \u00ac in some txt files
 		line = line.replaceAll("\u00ac", "");
 		return line;
 	}
 
 	/**
-	 * Overloaded purge() for a list
+	 * Overloaded cleanWhiteSpaces() for a list
 	 * 
 	 * @param content
 	 *            input list
 	 * @return content output list
 	 */
-	public static List<String> purge(LinkedList<String> content) {
+	public static List<String> cleanWhiteSpaces(LinkedList<String> content) {
 		String line;
 		for (int i = 0; i < content.size(); i++) {
-			line = purge(content.get(i));
+			line = cleanWhiteSpaces(content.get(i));
 			content.set(i, line);
 		}
 		return content;
@@ -119,13 +118,13 @@ public final class Processor {
 			emptyLine = emptyLinePattern.matcher(currentLine);
 			endOfParagraph = endOfParagraphPattern.matcher(currentLine);
 			if (emptyLine.matches()) {
-				paragraphs.add(purge(sb.toString()));
+				paragraphs.add(cleanWhiteSpaces(sb.toString()));
 				sb = new StringBuilder();
 			} else if (endOfParagraph.find()
 					|| iterator.nextIndex() == content.size()) {
 				// append(" ") - for avoiding concatenation of two edge words
 				sb.append(currentLine).append(" ");
-				paragraphs.add(purge(sb.toString()));
+				paragraphs.add(cleanWhiteSpaces(sb.toString()));
 				sb = new StringBuilder();
 			} else {
 				sb.append(currentLine).append(" ");
@@ -138,7 +137,7 @@ public final class Processor {
 	 * One particular way to detect sentences on the base of tokens
 	 * 
 	 * @param tokens
-	 * @return
+	 * @return paragraph - composite text
 	 * @throws ParseException
 	 */
 	public static TextComponent breakSentence(List<Token> tokens)
@@ -234,7 +233,7 @@ public final class Processor {
 	 * @return paragraph list of Sentences
 	 * @throws ParseException
 	 */
-	public static TextComponent tokenizer(String txtLine) throws ParseException {
+	public static TextComponent parse(String txtLine) throws ParseException {
 		return breakSentence(tokenize(txtLine));
 	}
 
@@ -279,51 +278,22 @@ public final class Processor {
 		if (doc == null || doc.getContent().size() == 0) {
 			return CompositeText.create(paragraphs);
 		}
-		LinkedList<String> content = (LinkedList<String>) purge(new LinkedList<String>(
+		LinkedList<String> content = (LinkedList<String>) cleanWhiteSpaces(new LinkedList<String>(
 				doc.getContent()));
+		parse(content);
+		return parse(content);
+	}
+	
+	public static TextComponent parse(List<String> content) throws ParseException {
+		List<TextComponent> paragraphs = new LinkedList<TextComponent>();
 		LinkedList<String> rawParagraphs = (LinkedList<String>) paragraphDetector(content);
 		for (String rawParagraph : rawParagraphs) {
-			TextComponent paragraph = tokenizer(rawParagraph);
+			TextComponent paragraph = parse(rawParagraph);
 			paragraphs.add(paragraph);
 		}
 		TextComponent document = CompositeText.create(paragraphs,TextComponentName.DOCUMENT);
 		assignTokenAttribute(document);
 		return document;
-	}
-
-	/**
-	 * Print every sentence of the document in a new line, with empty line
-	 * between paragraphs
-	 * 
-	 * @param document
-	 * @return string
-	 */
-	public static String printText(TextComponent document) {
-		return new StringBuilder().append(document.toOriginalString())
-				.toString();
-	}
-
-	/**
-	 * Print document in XML style
-	 * 
-	 * @param document
-	 * @return string
-	 */
-	public static String printXML(TextComponent document) {
-		StringBuilder sb = new StringBuilder();
-		String name = DefaultType.DEFAULT.toString();
-		if (document.getName() != null) {
-			name = document.getName().toString();
-		}
-		String type = DefaultType.DEFAULT.toString();
-		if (document.getType() != null) {
-			type = document.getType().toString();
-		}
-		sb.append("<").append(name).append(" type=\"").append(type)
-				.append("\">\n");
-		sb.append(document.printXML());
-		sb.append("</").append(name).append(">");
-		return sb.toString();
 	}
 
 	public static void assignTokenAttribute(TextComponent document)
@@ -348,7 +318,6 @@ public final class Processor {
 		Matcher numericMatcher;
 		Matcher wordMatcher;
 		Matcher punctuationMatcher;
-		
 		
 		Iterator<?> iterator= document.createIterator();
 		while(iterator.hasNext()){

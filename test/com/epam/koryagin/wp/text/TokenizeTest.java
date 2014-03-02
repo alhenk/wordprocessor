@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.epam.koryagin.wp.components.text.Token;
-import com.epam.koryagin.wp.parser.Processor;
+import com.epam.koryagin.wp.parser.Parser;
 
 public class TokenizeTest {
 	private String line = "'I'm a Duchess,' she said."
@@ -52,7 +52,7 @@ public class TokenizeTest {
 
 	@Test
 	public void testParagraphDetector() throws ParseException {
-		List<Token> tokens = Processor.tokenize(line);
+		List<Token> tokens = Parser.tokenize(line);
 		List<String> strings = new LinkedList<String>();
 		for(Token token: tokens){
 			strings.add(token.getValue());

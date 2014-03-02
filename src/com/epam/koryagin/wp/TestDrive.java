@@ -2,10 +2,10 @@ package com.epam.koryagin.wp;
 
 import com.epam.koryagin.wp.components.TextComponent;
 import com.epam.koryagin.wp.components.TextComponent.TextComponentName;
+import com.epam.koryagin.wp.components.TextComponentPrinter;
 import com.epam.koryagin.wp.components.text.CompositeText;
 import com.epam.koryagin.wp.components.text.DefaultType;
 import com.epam.koryagin.wp.components.text.Token;
-import com.epam.koryagin.wp.parser.Processor;
 
 public class TestDrive {
 	public static void main(String[] args) {
@@ -49,7 +49,7 @@ public class TestDrive {
 
 //		}
 		
-		System.out.println(Processor.printXML(document));
+		System.out.println(TextComponentPrinter.printXML(document));
 		System.out.println(document.toOriginalString());
 		
 		for(TextComponent par :document){

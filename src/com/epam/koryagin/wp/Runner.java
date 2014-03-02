@@ -10,8 +10,9 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.epam.koryagin.wp.components.TextComponentPrinter;
 import com.epam.koryagin.wp.components.text.CompositeText;
-import com.epam.koryagin.wp.parser.Processor;
+import com.epam.koryagin.wp.parser.Parser;
 
 public class Runner {
 	private static final Logger LOGGER = Logger.getLogger(Runner.class);
@@ -65,12 +66,12 @@ public class Runner {
 	public static void main(String[] args) throws ParseException, IOException {
 
 		File file = getFile(args);
-		CompositeText document = (CompositeText) Processor.parse(file);
+		CompositeText document = (CompositeText) Parser.parse(file);
 		if (document == null || document.getComponents().size() == 0) {
 			LOGGER.error("Failed to get document");
 		} else {
-			LOGGER.info("\n" + Processor.printText(document));
-			// LOGGER.info("\n" + Processor.printXML(document));
+			LOGGER.info("\n" + TextComponentPrinter.printText(document));
+			LOGGER.info("\n" + TextComponentPrinter.printXML(document));
 		}
 
 		Set<String> words;
@@ -82,7 +83,6 @@ public class Runner {
 		LOGGER.info(words);
 		// Task 2
 		// Print out all sentences in ascending order of words count
-		;
 		LOGGER.info("TASK 2:");
 		LOGGER.info(TaskLogic.sortSentencesInAsceascendingOrderOfWordCount(document));
 
@@ -92,7 +92,7 @@ public class Runner {
 		int wordLength = 3;
 		words = TaskLogic.findWordsInterrogative(document, wordLength);
 		LOGGER.info("TASK 4:");
-		LOGGER.info("The unique words of a given length = " + wordLength + " "
+		LOGGER.info("The unique words of a given length = " + wordLength + " : "
 				+ words);
 	}
 }
