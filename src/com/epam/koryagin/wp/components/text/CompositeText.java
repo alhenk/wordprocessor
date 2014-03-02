@@ -1,7 +1,6 @@
 package com.epam.koryagin.wp.components.text;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +37,12 @@ public class CompositeText extends TextComponent implements Serializable,
 		compositeText.type = DefaultType.DEFAULT;
 		return compositeText;
 	}
+	public static CompositeText create(List<TextComponent> components, TextComponentName name) {
+		CompositeText compositeText = new CompositeText(components);
+		compositeText.name = name;
+		compositeText.type = DefaultType.DEFAULT;
+		return compositeText;
+	}
 
 	public static CompositeText create(TextComponentName name) {
 		CompositeText compositeText = new CompositeText();
@@ -55,8 +60,9 @@ public class CompositeText extends TextComponent implements Serializable,
 	}
 
 	public List<TextComponent> getComponents() {
-		return (List<TextComponent>) Collections
-				.unmodifiableCollection(components);
+//		return (List<TextComponent>) Collections
+//				.unmodifiableCollection(components);
+		return components;
 	}
 
 	public void setComponents(List<TextComponent> components) {
@@ -104,7 +110,7 @@ public class CompositeText extends TextComponent implements Serializable,
 		Iterator<TextComponent> iterator = components.iterator();
 		while (iterator.hasNext()) {
 			TextComponent component = (TextComponent) iterator.next();
-			sb.append(component.toOriginalString());
+			sb.append(component.toOriginalString()).append(" ");
 		}
 		return sb.append("\n").toString();
 	}

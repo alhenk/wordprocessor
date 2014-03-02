@@ -1,5 +1,6 @@
 package com.epam.koryagin.wp.parser;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +11,15 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.epam.koryagin.wp.TextReader;
 import com.epam.koryagin.wp.components.TextComponent;
+import com.epam.koryagin.wp.components.TextComponent.TextComponentName;
+import com.epam.koryagin.wp.components.text.CompositeText;
+import com.epam.koryagin.wp.components.text.DefaultType;
+import com.epam.koryagin.wp.components.text.ParagraphType;
+import com.epam.koryagin.wp.components.text.SentenceType;
+import com.epam.koryagin.wp.components.text.Token;
+import com.epam.koryagin.wp.components.text.TokenType;
 
 /**
  * Utility class for text processing purge(String) purge(LinkedList<String>)
@@ -131,7 +140,7 @@ public final class Processor {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static TextComponent breakSentence(List<String> tokens)
+	public static TextComponent breakSentence(List<Token> tokens)
 			throws ParseException {
 		String quotationRegex = properties.getString("regex.quotation");
 
@@ -144,72 +153,79 @@ public final class Processor {
 		}
 
 		Matcher quotationMatcher;
-		Sentence sentence;
-		List<Sentence> sentences = new LinkedList<Sentence>();
-		List<Token> phrase = new LinkedList<Token>();
+		TextComponent sentence;
+		TextComponent paragrpaph = CompositeText
+				.create(TextComponentName.PARAGRPAPH);
+		List<TextComponent> phrase = new LinkedList<TextComponent>();
 
-		for (String element : tokens) {
-			if (element != null) {
-				quotationMatcher = quotationPattern.matcher(element);
+		for (Token token : tokens) {
+			if (token != null) {
+				quotationMatcher = quotationPattern.matcher(token.getValue());
 				if (quotationMatcher.matches()) {
 					if (phrase.size() > 0) {
-						sentence = Sentence.create(phrase);
-						sentences.add(sentence);
+						sentence = CompositeText.create(phrase,
+								TextComponentName.SENTENCE);
+						paragrpaph.add(sentence);
 					}
-					phrase = new LinkedList<Token>();
-					Token theToken = new Token(element);
-					theToken.setType(Token.Type.QUOTATION_MARK);
-					phrase.add(theToken);
-					sentence = Sentence.create(phrase);
-					sentence.setType(Sentence.Type.QUOTATION);
-					sentences.add(sentence);
-					phrase = new LinkedList<Token>();
+					phrase = new LinkedList<TextComponent>();
+					token.setType(TokenType.PUNCTUATION);
+					phrase.add(token);
+					sentence = CompositeText.create(phrase,
+							TextComponentName.SENTENCE);
+					sentence.setType(SentenceType.DEFAULT);
+					paragrpaph.add(sentence);
+					phrase = new LinkedList<TextComponent>();
 					continue;
 				}
 
-				if (!element.equals(System.lineSeparator())) {
-					phrase.add(new Token(element));
+				if (!token.equals(System.lineSeparator())) {
+					phrase.add(token);
 				}
 
-				if (element.equals(System.lineSeparator())) {
+				if (token.equals(System.lineSeparator())) {
 					if (phrase.size() > 0) {
-						sentence = Sentence.create(phrase);
-						sentence.setType(Sentence.Type.HEADER);
-						sentences.add(sentence);
+						sentence = CompositeText.create(phrase,
+								TextComponentName.SENTENCE);
+						paragrpaph.setType(ParagraphType.HEADER);
+						paragrpaph.add(sentence);
 					}
-					phrase = new LinkedList<Token>();
-				} else if (element.equals(".")) {
+					phrase = new LinkedList<TextComponent>();
+				} else if (token.equals(".")) {
 					if (phrase.size() > 0) {
-						sentence = Sentence.create(phrase);
+						sentence = CompositeText.create(phrase,
+								TextComponentName.SENTENCE);
 						// actually it is not always declarative
-						sentence.setType(Sentence.Type.DECLARATIVE);
-						sentences.add(sentence);
+						sentence.setType(SentenceType.DECLARATIVE);
+						paragrpaph.add(sentence);
 					}
-					phrase = new LinkedList<Token>();
-				} else if (element.equals("?")) {
+					phrase = new LinkedList<TextComponent>();
+				} else if (token.equals("?")) {
 					if (phrase.size() > 0) {
-						sentence = Sentence.create(phrase);
-						sentence.setType(Sentence.Type.INTERROGATIVE);
-						sentences.add(sentence);
+						sentence = CompositeText.create(phrase,
+								TextComponentName.SENTENCE);
+						sentence.setType(SentenceType.INTERROGATIVE);
+						paragrpaph.add(sentence);
 					}
-					phrase = new LinkedList<Token>();
-				} else if (element.equals("!")) {
+					phrase = new LinkedList<TextComponent>();
+				} else if (token.equals("!")) {
 					if (phrase.size() > 0) {
-						sentence = Sentence.create(phrase);
-						sentence.setType(Sentence.Type.EXCLAMATORY);
-						sentences.add(sentence);
+						sentence = CompositeText.create(phrase,
+								TextComponentName.SENTENCE);
+						sentence.setType(SentenceType.EXCLAMATORY);
+						paragrpaph.add(sentence);
 					}
-					phrase = new LinkedList<Token>();
+					phrase = new LinkedList<TextComponent>();
 				}
 			}
 		}
-		return sentences;
+		return paragrpaph;
 	}
-//
-//	public static List<String> breakSentence(String txtLine) {
-//		return null;
-//	}
-//
+
+	//
+	// public static List<String> breakSentence(String txtLine) {
+	// return null;
+	// }
+	//
 	/**
 	 * Parse sentence and tokens
 	 * 
@@ -218,8 +234,7 @@ public final class Processor {
 	 * @return paragraph list of Sentences
 	 * @throws ParseException
 	 */
-	public static List<TextComponent> tokenizer(String txtLine)
-			throws ParseException {
+	public static TextComponent tokenizer(String txtLine) throws ParseException {
 		return breakSentence(tokenize(txtLine));
 	}
 
@@ -230,9 +245,9 @@ public final class Processor {
 	 * @return list of String
 	 * @throws ParseException
 	 */
-	public static List<String> tokenize(String textLine) throws ParseException {
+	public static List<Token> tokenize(String textLine) throws ParseException {
 		String tokenRegex = properties.getString("regex.token");
-		List<String> tokens = new LinkedList<String>();
+		List<Token> tokens = new LinkedList<Token>();
 
 		Pattern tokenPattern;
 		try {
@@ -244,9 +259,9 @@ public final class Processor {
 
 		Matcher tokenMatcher = tokenPattern.matcher(textLine);
 		while (tokenMatcher.find()) {
-			tokens.add(tokenMatcher.group());
+			tokens.add(new Token(tokenMatcher.group()));
 		}
-		tokens.add(System.lineSeparator());
+		tokens.add(new Token(System.lineSeparator()));
 
 		return tokens;
 	}
@@ -258,23 +273,21 @@ public final class Processor {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static TextDocument parse(File file) throws ParseException {
-		Paragraph paragraph;
-		List<Paragraph> paragraphs = new LinkedList<Paragraph>();
+	public static TextComponent parse(File file) throws ParseException {
+		List<TextComponent> paragraphs = new LinkedList<TextComponent>();
+
 		TextReader doc = new TextReader(file);
 		if (doc == null || doc.getContent().size() == 0) {
-			return TextDocument.create(paragraphs);
+			return CompositeText.create(paragraphs, TextComponentName.DEFAULT);
 		}
-		LinkedList<String> content = (LinkedList<String>) Processor
-				.purge(new LinkedList<String>(doc.getContent()));
-		LinkedList<String> rawParagraphs = (LinkedList<String>) Processor
-				.paragraphDetector(content);
-		for (String element : rawParagraphs) {
-			List<Sentence> sentences = Processor.tokenizer(element);
-			paragraph = Paragraph.create(sentences);
+		LinkedList<String> content = (LinkedList<String>) purge(new LinkedList<String>(
+				doc.getContent()));
+		LinkedList<String> rawParagraphs = (LinkedList<String>) paragraphDetector(content);
+		for (String rawParagraph : rawParagraphs) {
+			TextComponent paragraph = tokenizer(rawParagraph);
 			paragraphs.add(paragraph);
 		}
-		return TextDocument.create(paragraphs);
+		return CompositeText.create(paragraphs);
 	}
 
 	/**
@@ -285,7 +298,8 @@ public final class Processor {
 	 * @return string
 	 */
 	public static String printText(TextComponent document) {
-		return new StringBuilder().append(document.toOriginalString()).toString();
+		return new StringBuilder().append(document.toOriginalString())
+				.toString();
 	}
 
 	/**
@@ -296,60 +310,59 @@ public final class Processor {
 	 */
 	public static String printXML(TextComponent document) {
 		StringBuilder sb = new StringBuilder();
-		//String name = document.getName().toString();
-		String name = "DEFAULT";
-		if(document.getName()!= null){
-				name = document.getName().toString();
+		String name = DefaultType.DEFAULT.toString();
+		if (document.getName() != null) {
+			name = document.getName().toString();
 		}
-		String type = "DEFAULT";
-		if(document.getType()!= null){
+		String type = DefaultType.DEFAULT.toString();
+		if (document.getType() != null) {
 			type = document.getType().toString();
 		}
-		sb.append("<").append(name).append(" type=\"").append(type).append("\">\n");
+		sb.append("<").append(name).append(" type=\"").append(type)
+				.append("\">\n");
 		sb.append(document.printXML());
 		sb.append("</").append(name).append(">");
 		return sb.toString();
 	}
-	
 
-	public static void assignTokenAttribute(TextComponent document)
-			throws ParseException {
-		String numericRegex = properties.getString("regex.token.numeric");
-		String wordRegex = properties.getString("regex.token.word");
-		String punctuationRegex = properties
-				.getString("regex.token.punctuation");
-
-		Pattern numericPattern;
-		Pattern wordPattern;
-		Pattern punctuationPattern;
-		try {
-			wordPattern = Pattern.compile(wordRegex);
-			numericPattern = Pattern.compile(numericRegex);
-			punctuationPattern = Pattern.compile(punctuationRegex);
-		} catch (IllegalArgumentException e) {
-			LOGGER.error("Sintax error in token attribute regex" + e);
-			throw new ParseException(numericRegex, 0);
-		}
-		String value;
-		Matcher numericMatcher;
-		Matcher wordMatcher;
-		Matcher punctuationMatcher;
-		for (Paragraph paragraph : document.getParagraphs()) {
-			for (Sentence sentence : paragraph.getSentences()) {
-				for (Token token : sentence.getTokens()) {
-					value = token.getValue();
-					numericMatcher = numericPattern.matcher(value);
-					wordMatcher = wordPattern.matcher(value);
-					punctuationMatcher = punctuationPattern.matcher(value);
-					if (numericMatcher.matches()) {
-						token.setType(Token.Type.NUMERIC);
-					} else if (wordMatcher.matches()) {
-						token.setType(Token.Type.WORD);
-					} else if (punctuationMatcher.matches()) {
-						token.setType(Token.Type.PUNCTUATION);
-					}
-				}
-			}
-		}
-	}
+//	public static void assignTokenAttribute(TextComponent document)
+//			throws ParseException {
+//		String numericRegex = properties.getString("regex.token.numeric");
+//		String wordRegex = properties.getString("regex.token.word");
+//		String punctuationRegex = properties
+//				.getString("regex.token.punctuation");
+//
+//		Pattern numericPattern;
+//		Pattern wordPattern;
+//		Pattern punctuationPattern;
+//		try {
+//			wordPattern = Pattern.compile(wordRegex);
+//			numericPattern = Pattern.compile(numericRegex);
+//			punctuationPattern = Pattern.compile(punctuationRegex);
+//		} catch (IllegalArgumentException e) {
+//			LOGGER.error("Sintax error in token attribute regex" + e);
+//			throw new ParseException(numericRegex, 0);
+//		}
+//		String value;
+//		Matcher numericMatcher;
+//		Matcher wordMatcher;
+//		Matcher punctuationMatcher;
+//		for (Paragraph paragraph : document.getParagraphs()) {
+//			for (Sentence sentence : paragraph.getSentences()) {
+//				for (Token token : sentence.getTokens()) {
+//					value = token.getValue();
+//					numericMatcher = numericPattern.matcher(value);
+//					wordMatcher = wordPattern.matcher(value);
+//					punctuationMatcher = punctuationPattern.matcher(value);
+//					if (numericMatcher.matches()) {
+//						token.setType(Token.Type.NUMERIC);
+//					} else if (wordMatcher.matches()) {
+//						token.setType(Token.Type.WORD);
+//					} else if (punctuationMatcher.matches()) {
+//						token.setType(Token.Type.PUNCTUATION);
+//					}
+//				}
+//			}
+//		}
+//	}
 }
