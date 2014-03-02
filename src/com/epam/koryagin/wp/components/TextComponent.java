@@ -1,6 +1,7 @@
 package com.epam.koryagin.wp.components;
 
 import java.util.Iterator;
+import java.util.List;
 
 public abstract class TextComponent implements Iterable<TextComponent> {
 	public static enum TextComponentName {
@@ -16,6 +17,9 @@ public abstract class TextComponent implements Iterable<TextComponent> {
 	}
 
 	public String getValue() {
+		throw new UnsupportedOperationException();
+	}
+	public List<TextComponent> getComponents(){
 		throw new UnsupportedOperationException();
 	}
 

@@ -1,6 +1,9 @@
 package com.epam.koryagin.wp;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -47,6 +50,24 @@ public class TaskLogic {
 			}
 		}
 		return words;
+	}
+
+	public static String sortSentencesInAsceascendingOrderOfWordCount(
+			CompositeText document) {
+		List<TextComponent> sentences = new ArrayList<TextComponent>();
+		Iterator<?> iterator = document.createIterator();
+		while (iterator.hasNext()) {
+			TextComponent sentence = (TextComponent) iterator.next();
+			if (sentence.getName().equals(TextComponentName.SENTENCE)) {
+				sentences.add(sentence);
+			}
+		}
+		Collections.sort(sentences, new CompositeText.ComponentSizeComparator());
+		StringBuilder sb = new StringBuilder();
+		for(TextComponent sentence: sentences){
+			sb.append(sentence.toOriginalString()).append("\n");
+		}
+		return sb.toString();
 	}
 
 	public static Set<String> pickupUniqueWords(CompositeText document) {

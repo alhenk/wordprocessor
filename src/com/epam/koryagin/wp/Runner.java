@@ -74,12 +74,17 @@ public class Runner {
 		}
 
 		Set<String> words;
-		//Task 0
-		//Find all unique words in the document
+		// Task 0
+		// Find all unique words in the document
 		words = TaskLogic.pickupUniqueWords(document);
 		LOGGER.info("TASK 0:");
 		LOGGER.info("All unique words (" + words.size() + ") in the document ");
 		LOGGER.info(words);
+		// Task 2
+		// Print out all sentences in ascending order of words count
+		;
+		LOGGER.info("TASK 2:");
+		LOGGER.info(TaskLogic.sortSentencesInAsceascendingOrderOfWordCount(document));
 
 		// Task 4
 		// Find and print all unique words of a given length

@@ -1,6 +1,7 @@
 package com.epam.koryagin.wp.components.text;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +38,9 @@ public class CompositeText extends TextComponent implements Serializable,
 		compositeText.type = DefaultType.DEFAULT;
 		return compositeText;
 	}
-	public static CompositeText create(List<TextComponent> components, TextComponentName name) {
+
+	public static CompositeText create(List<TextComponent> components,
+			TextComponentName name) {
 		CompositeText compositeText = new CompositeText(components);
 		compositeText.name = name;
 		compositeText.type = DefaultType.DEFAULT;
@@ -59,9 +62,10 @@ public class CompositeText extends TextComponent implements Serializable,
 		return compositeText;
 	}
 
+	@Override
 	public List<TextComponent> getComponents() {
-//		return (List<TextComponent>) Collections
-//				.unmodifiableCollection(components);
+		// return (List<TextComponent>) Collections
+		// .unmodifiableCollection(components);
 		return components;
 	}
 
@@ -114,21 +118,23 @@ public class CompositeText extends TextComponent implements Serializable,
 		}
 		return sb.append("\n").toString();
 	}
+
 	@Override
-	public String printXML(){
+	public String printXML() {
 		StringBuilder sb = new StringBuilder();
 		Iterator<TextComponent> iterator = components.iterator();
 		while (iterator.hasNext()) {
 			TextComponent component = (TextComponent) iterator.next();
 			String name = DefaultType.DEFAULT.toString();
-			if(component.getName()!= null){
-					name = component.getName().toString();
+			if (component.getName() != null) {
+				name = component.getName().toString();
 			}
 			String type = DefaultType.DEFAULT.toString();
-			if(component.getType()!= null){
+			if (component.getType() != null) {
 				type = component.getType().toString();
 			}
-			sb.append("\t<").append(name).append(" type=\"").append(type).append("\">\n");
+			sb.append("\t<").append(name).append(" type=\"").append(type)
+					.append("\">\n");
 			sb.append(component.printXML());
 			sb.append("\t</").append(name).append(">\n");
 		}
@@ -137,9 +143,9 @@ public class CompositeText extends TextComponent implements Serializable,
 
 	@Override
 	public Iterator<?> createIterator() {
-		//if (iterator == null) {
+		// if (iterator == null) {
 		iterator = new CompositeIterator(components.iterator());
-		//}
+		// }
 		return iterator;
 	}
 
@@ -200,6 +206,23 @@ public class CompositeText extends TextComponent implements Serializable,
 	@Override
 	public Iterator<TextComponent> iterator() {
 		return this.components.iterator();
-		
+
+	}
+
+	public static class ComponentSizeComparator implements
+			Comparator<TextComponent> {
+		@Override
+		public int compare(TextComponent component1, TextComponent component2) {
+			if (component1 instanceof CompositeText && component2 instanceof CompositeText){
+				Integer length1 = component1.getComponents().size();
+				Integer length2 = component2.getComponents().size();
+			return length1.compareTo(length2);
+			} else if (component1 instanceof Token && component2 instanceof Token){
+				Integer length1 = component1.getValue().length();
+				Integer length2 = component2.getValue().length();
+			return length1.compareTo(length2);
+			}
+			return 0;
+		}
 	}
 }
