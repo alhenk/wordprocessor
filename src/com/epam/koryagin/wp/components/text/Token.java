@@ -1,6 +1,7 @@
 package com.epam.koryagin.wp.components.text;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import com.epam.koryagin.wp.components.NullIterator;
@@ -8,8 +9,7 @@ import com.epam.koryagin.wp.components.TextComponent;
 import com.epam.koryagin.wp.components.TextComponentType;
 
 /**
- * Token is a homogeneous component,
- * "leaf" node in composite pattern model
+ * Token is a homogeneous component, "leaf" node in composite pattern model
  * 
  * @author Alexandr Koryagin
  * 
@@ -35,7 +35,7 @@ public class Token extends TextComponent implements Serializable,
 
 	@Override
 	public int compareTo(Token o) {
-		return value.compareTo(o.getValue());
+		return value.toLowerCase().compareTo(o.getValue().toLowerCase());
 	}
 
 	public String getValue() {
@@ -127,14 +127,12 @@ public class Token extends TextComponent implements Serializable,
 
 			@Override
 			public TextComponent next() {
-				// TODO Auto-generated method stub
 				return null;
 			}
 
 			@Override
 			public void remove() {
 				throw new UnsupportedOperationException();
-
 			}
 		};
 	}

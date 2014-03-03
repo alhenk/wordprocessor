@@ -51,10 +51,7 @@ public final class TaskLogic {
 					count++;
 				}
 			}
-			
 		}
-		
-		
 		return count;
 	}
 	
@@ -102,6 +99,7 @@ public final class TaskLogic {
 	public static String subtask3(CompositeText document, int sentenceIndex) {
 		List<TextComponent> sentences = listOfAllSentences(document);
 		TextComponent theSentence = sentences.get(sentenceIndex);
+		
 		Set<String> words = new TreeSet<String>();
 		for(TextComponent token : theSentence){
 			if (token instanceof Token && token.getType().equals(TokenType.WORD)) {
@@ -119,7 +117,6 @@ public final class TaskLogic {
 				}
 			}
 		}
-		
 		words.removeAll(documentWords);
 		return words.toString();
 	}
@@ -172,8 +169,7 @@ public final class TaskLogic {
 			if (token.getName().equals(TextComponentName.TOKEN)) {
 				if (token.getType().equals(TokenType.WORD)) {
 					String value = token.getValue();
-					words.add(value);
-
+					words.add(value.toLowerCase());
 				}
 			}
 		}

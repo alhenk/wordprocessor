@@ -110,10 +110,11 @@ public class Runner {
 		LOGGER.info("The unique words of a given length = " + wordLength
 				+ " : " + words);
 
-		// Task 6
-		// Find and print all unique words in the document in alphabetic order
+		/**
+		 * Subtask 6 Find and print all unique words in the document in alphabetic order
+		 */
 		String uniqueWords = TaskLogic.pickupUniqueWords(document);
-		LOGGER.info("SUBTASK 0:");
+		LOGGER.info("SUBTASK 6:");
 		LOGGER.info("All unique words in the document in alphabetic order");
 		LOGGER.info(uniqueWords);
 
