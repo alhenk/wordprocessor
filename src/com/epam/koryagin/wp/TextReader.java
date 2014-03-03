@@ -23,25 +23,25 @@ public class TextReader {
 	}
 
 	public TextReader(File file) {
-		BufferedReader bufferedReder = null;
+		BufferedReader bufferedReader = null;
 		content = new LinkedList<String>();
 		try {
-			bufferedReder = new BufferedReader(new FileReader(file));
+			bufferedReader = new BufferedReader(new FileReader(file));
 		} catch (FileNotFoundException e) {
 			LOGGER.error("File not found" + e);
 		}
-		if (bufferedReder != null) {
+		if (bufferedReader != null) {
 			try {
-				String line = bufferedReder.readLine();
+				String line = bufferedReader.readLine();
 				while (line != null) {
 					content.add(line);
-					line = bufferedReder.readLine();
+					line = bufferedReader.readLine();
 				}
 			} catch (IOException e) {
 				LOGGER.error("Reading Line Error" + e);
 			} finally {
 				try {
-					bufferedReder.close();
+					bufferedReader.close();
 				} catch (IOException e) {
 					LOGGER.error("File Close Error" + e);
 				}
