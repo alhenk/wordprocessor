@@ -2,6 +2,7 @@ package com.epam.koryagin.wp;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -29,10 +30,37 @@ public final class TaskLogic {
 	}
 	
 	/**
+	 * Subtask 1 find maximum number of sentences that have identical words
+	 */
+	public static int subtask1(CompositeText document) {
+		List<TextComponent> sentences = listOfAllSentences(document);
+		List<String> allWords;
+		Set<String> uniqueWords;
+		int count=0;
+		for(int i=0;i<sentences.size();i++){
+			allWords = new ArrayList<String>();
+			uniqueWords = new HashSet<String>();
+			for(TextComponent token:sentences.get(i)){
+				if (token instanceof Token && token.getType().equals(TokenType.WORD)) {
+					allWords.add(token.getValue());
+					uniqueWords.add(token.getValue());
+				}
+			}
+			if (allWords.size() > 0 &&  uniqueWords.size() >0){
+				if (allWords.size() != uniqueWords.size()){
+					count++;
+				}
+			}
+			
+		}
+		
+		
+		return count;
+	}
+	
+	/**
 	 * Subtask 2 Print out all sentences in ascending order of words count
-	 * 
-	 * @param document
-	 * @return
+	 *
 	 */
 	public static String sortSentencesInAsceascendingOrderOfWordCount(
 			CompositeText document) {
@@ -53,14 +81,7 @@ public final class TaskLogic {
 		return sb.toString();
 	}
 	
-	/**
-	 * Subtask 3 Find a word (a set of words) in a particular sentence
-	 * that is not included in all other sentences
-	 * 
-	 * @param document
-	 * @return
-	 */
-	public static String subtask3(CompositeText document) {
+	public static List<TextComponent> listOfAllSentences(CompositeText document){
 		List<TextComponent> sentences = new ArrayList<TextComponent>();
 
 		Iterator<?> iterator = document.createIterator();
@@ -70,8 +91,17 @@ public final class TaskLogic {
 				sentences.add(sentence);
 			}
 		}
-		int sentenceIndex = 10;
-		TextComponent theSentence = sentences.get(10);
+		return  sentences;
+	}
+	
+	/**
+	 * Subtask 3 Find a word (a set of words) in a particular sentence
+	 * that is not included in all other sentences
+	 * 
+	 */
+	public static String subtask3(CompositeText document, int sentenceIndex) {
+		List<TextComponent> sentences = listOfAllSentences(document);
+		TextComponent theSentence = sentences.get(sentenceIndex);
 		Set<String> words = new TreeSet<String>();
 		for(TextComponent token : theSentence){
 			if (token instanceof Token && token.getType().equals(TokenType.WORD)) {
