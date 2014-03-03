@@ -7,7 +7,10 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.log4j.Logger;
+
+import com.epam.koryagin.wp.components.TextComponentPrinter;
 import com.epam.koryagin.wp.components.text.CompositeText;
 import com.epam.koryagin.wp.parser.Parser;
 
@@ -22,11 +25,13 @@ public class Runner {
 	 * @param args
 	 * @return
 	 * @throws ParseException
+	 * @throws IOException 
 	 */
-	private static File getFile(String... args) throws ParseException {
-		File file = null;
+	private static File getFile(String... args) throws ParseException, IOException {
+		String fileName = "sample_doc.txt";
+		//default file
+		File file = new FileResource().getFile(fileName);
 		String fileNameRegex = properties.getString("regex.textfile");
-
 		Pattern fileNamePattern;
 		try {
 			fileNamePattern = Pattern.compile(fileNameRegex);
@@ -43,10 +48,8 @@ public class Runner {
 			}
 		} else if (args.length > 1) {
 			LOGGER.info("Too much parameters, trying to run default txt file");
-			file = null;
 		} else {
 			LOGGER.info("No parameters, trying to run default txt file");
-			file = null;
 		}
 		return file;
 	}
@@ -71,7 +74,7 @@ public class Runner {
 			LOGGER.error("Failed to get document");
 		} else {
 			// LOGGER.info("\n" + TextComponentPrinter.printText(document));
-			// LOGGER.info("\n" + TextComponentPrinter.printXML(document));
+			LOGGER.info("\n" + TextComponentPrinter.printXML(document));
 		}
 
 		/**
