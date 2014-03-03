@@ -75,18 +75,12 @@ public class Runner {
 			LOGGER.info("\n" + TextComponentPrinter.printXML(document));
 		}
 
-		Set<String> words;
-		// Task 0
-		// Find all unique words in the document
-		words = TaskLogic.pickupUniqueWords(document);
-		LOGGER.info("TASK 0:");
-		LOGGER.info("All unique words (" + words.size() + ") in the document ");
-		LOGGER.info(words);
+
 		/**
 		 *  Subtask 2
 		 *  Print out all sentences in ascending order of words count
 		 */
-		LOGGER.info("TASK 2:");
+		LOGGER.info("SUBTASK 2:");
 		LOGGER.info(TaskLogic.sortSentencesInAsceascendingOrderOfWordCount(document));
 
 		/** 
@@ -94,7 +88,7 @@ public class Runner {
 		 * Find a word (a set of words) in a particular sentence
 		 * that is not included in all other sentences
 		 */
-		LOGGER.info("TASK 3:");
+		LOGGER.info("SUBTASK 3:");
 		LOGGER.info("A set of words in a particular sentence that is not included in all other sentences");
 		LOGGER.info(TaskLogic.subtask3(document));
 		
@@ -104,10 +98,17 @@ public class Runner {
 		 * in interrogative sentences
 		 */
 		int wordLength = 3;
-		words = TaskLogic.findWordsInterrogative(document, wordLength);
-		LOGGER.info("TASK 4:");
+		Set<String> words = TaskLogic.findWordsInterrogative(document, wordLength);
+		LOGGER.info("SUBTASK 4:");
 		LOGGER.info("The unique words of a given length = " + wordLength + " : "
 				+ words);
+		
+		// Task 6
+		// Find and print all unique words in the document in alphabetic order
+		String uniqueWords = TaskLogic.pickupUniqueWords(document);
+		LOGGER.info("SUBTASK 0:");
+		LOGGER.info("All unique words in the document in alphabetic order");
+		LOGGER.info(uniqueWords);
 		
 
 	}

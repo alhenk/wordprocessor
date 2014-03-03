@@ -27,40 +27,32 @@ public final class TaskLogic {
 
 	private TaskLogic() {
 	}
-
+	
 	/**
-	 * Subtask 4 Find and print all unique words of a given length in interrogative
-	 * sentences
+	 * Subtask 2 Print out all sentences in ascending order of words count
 	 * 
 	 * @param document
-	 * @param wordlength
-	 * @return words - a set of words
+	 * @return
 	 */
-	public static Set<String> findWordsInterrogative(CompositeText document,
-			int wordlength) {
-		if (wordlength < 0) {
-			LOGGER.error("Word length parameter must be positive");
-			throw new IllegalArgumentException(
-					"Word length parameter must be positive");
-		}
-		Set<String> words = new TreeSet<String>();
+	public static String sortSentencesInAsceascendingOrderOfWordCount(
+			CompositeText document) {
+		List<TextComponent> sentences = new ArrayList<TextComponent>();
 		Iterator<?> iterator = document.createIterator();
 		while (iterator.hasNext()) {
 			TextComponent sentence = (TextComponent) iterator.next();
-			if (sentence.getName().equals(TextComponentName.SENTENCE)
-					&& sentence.getType().equals(SentenceType.INTERROGATIVE)) {
-				for (TextComponent token : sentence) {
-					if (token.getType().equals(TokenType.WORD)) {
-						String value = token.getValue();
-						if (value.length() == wordlength) {
-							words.add(value);
-						}
-					}
-				}
+			if (sentence.getName().equals(TextComponentName.SENTENCE)) {
+				sentences.add(sentence);
 			}
 		}
-		return words;
+		Collections
+				.sort(sentences, new CompositeText.ComponentSizeComparator());
+		StringBuilder sb = new StringBuilder();
+		for (TextComponent sentence : sentences) {
+			sb.append(sentence.toOriginalString()).append("\n");
+		}
+		return sb.toString();
 	}
+	
 	/**
 	 * Subtask 3 Find a word (a set of words) in a particular sentence
 	 * that is not included in all other sentences
@@ -103,37 +95,46 @@ public final class TaskLogic {
 	}
 
 	/**
-	 * Subtask 2 Print out all sentences in ascending order of words count
+	 * Subtask 4 Find and print all unique words of a given length in interrogative
+	 * sentences
 	 * 
 	 * @param document
-	 * @return
+	 * @param wordlength
+	 * @return words - a set of words
 	 */
-	public static String sortSentencesInAsceascendingOrderOfWordCount(
-			CompositeText document) {
-		List<TextComponent> sentences = new ArrayList<TextComponent>();
+	public static Set<String> findWordsInterrogative(CompositeText document,
+			int wordlength) {
+		if (wordlength < 0) {
+			LOGGER.error("Word length parameter must be positive");
+			throw new IllegalArgumentException(
+					"Word length parameter must be positive");
+		}
+		Set<String> words = new TreeSet<String>();
 		Iterator<?> iterator = document.createIterator();
 		while (iterator.hasNext()) {
 			TextComponent sentence = (TextComponent) iterator.next();
-			if (sentence.getName().equals(TextComponentName.SENTENCE)) {
-				sentences.add(sentence);
+			if (sentence.getName().equals(TextComponentName.SENTENCE)
+					&& sentence.getType().equals(SentenceType.INTERROGATIVE)) {
+				for (TextComponent token : sentence) {
+					if (token.getType().equals(TokenType.WORD)) {
+						String value = token.getValue();
+						if (value.length() == wordlength) {
+							words.add(value);
+						}
+					}
+				}
 			}
 		}
-		Collections
-				.sort(sentences, new CompositeText.ComponentSizeComparator());
-		StringBuilder sb = new StringBuilder();
-		for (TextComponent sentence : sentences) {
-			sb.append(sentence.toOriginalString()).append("\n");
-		}
-		return sb.toString();
+		return words;
 	}
 
 	/**
-	 * Subtask 0 Find all unique words in the document
+	 * Subtask 6 Find all unique words in the document
 	 * 
 	 * @param document
 	 * @return
 	 */
-	public static Set<String> pickupUniqueWords(CompositeText document) {
+	public static String pickupUniqueWords(CompositeText document) {
 		Set<String> words = new TreeSet<String>();
 		Iterator<?> iterator = document.createIterator();
 		while (iterator.hasNext()) {
@@ -146,6 +147,18 @@ public final class TaskLogic {
 				}
 			}
 		}
-		return words;
+		char firstLetter = 'a';
+		StringBuffer sb = new StringBuffer("\n");
+		for (String word :words){
+			if (word.length()>0){
+				char letter = word.toLowerCase().charAt(0);
+				if (firstLetter != letter ){
+					firstLetter = letter;
+					sb.append("\n");
+				}
+				sb.append(word+" ");
+			}
+		}
+		return sb.toString();
 	}
 }
