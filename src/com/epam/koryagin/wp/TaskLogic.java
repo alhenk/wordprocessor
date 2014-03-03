@@ -13,31 +13,35 @@ import com.epam.koryagin.wp.components.TextComponent;
 import com.epam.koryagin.wp.components.TextComponent.TextComponentName;
 import com.epam.koryagin.wp.components.text.CompositeText;
 import com.epam.koryagin.wp.components.text.SentenceType;
+import com.epam.koryagin.wp.components.text.Token;
 import com.epam.koryagin.wp.components.text.TokenType;
 import com.epam.koryagin.wp.parser.Parser;
 
 /**
  * Logic for JAVALAB TASK2
+ * 
  * @author Alexandr Koryagin
  */
 public final class TaskLogic {
 	private static final Logger LOGGER = Logger.getLogger(Parser.class);
+
 	private TaskLogic() {
 	}
 
 	/**
-	 * Task 4
-	 * Find and print all unique words of a given length
-	 * in interrogative sentences
+	 * Subtask 4 Find and print all unique words of a given length in interrogative
+	 * sentences
+	 * 
 	 * @param document
 	 * @param wordlength
 	 * @return words - a set of words
 	 */
 	public static Set<String> findWordsInterrogative(CompositeText document,
 			int wordlength) {
-		if (wordlength < 0){
+		if (wordlength < 0) {
 			LOGGER.error("Word length parameter must be positive");
-			throw new IllegalArgumentException("Word length parameter must be positive");
+			throw new IllegalArgumentException(
+					"Word length parameter must be positive");
 		}
 		Set<String> words = new TreeSet<String>();
 		Iterator<?> iterator = document.createIterator();
@@ -57,10 +61,50 @@ public final class TaskLogic {
 		}
 		return words;
 	}
+	/**
+	 * Subtask 3 Find a word (a set of words) in a particular sentence
+	 * that is not included in all other sentences
+	 * 
+	 * @param document
+	 * @return
+	 */
+	public static String subtask3(CompositeText document) {
+		List<TextComponent> sentences = new ArrayList<TextComponent>();
+
+		Iterator<?> iterator = document.createIterator();
+		while (iterator.hasNext()) {
+			TextComponent sentence = (TextComponent) iterator.next();
+			if (sentence.getName().equals(TextComponentName.SENTENCE)) {
+				sentences.add(sentence);
+			}
+		}
+		int sentenceIndex = 10;
+		TextComponent theSentence = sentences.get(10);
+		Set<String> words = new TreeSet<String>();
+		for(TextComponent token : theSentence){
+			if (token instanceof Token && token.getType().equals(TokenType.WORD)) {
+				words.add(token.getValue());
+			}
+		}
+		Set<String>  documentWords = new TreeSet<String>();
+		for(int i=0;i<sentences.size();i++){
+			if(i==sentenceIndex){
+				continue;
+			}
+			for(TextComponent token:sentences.get(i)){
+				if (token instanceof Token && token.getType().equals(TokenType.WORD)) {
+					documentWords.add(token.getValue());
+				}
+			}
+		}
+		
+		words.removeAll(documentWords);
+		return words.toString();
+	}
 
 	/**
-	 * Task 2
-	 * Print out all sentences in ascending order of words count
+	 * Subtask 2 Print out all sentences in ascending order of words count
+	 * 
 	 * @param document
 	 * @return
 	 */
@@ -74,17 +118,18 @@ public final class TaskLogic {
 				sentences.add(sentence);
 			}
 		}
-		Collections.sort(sentences, new CompositeText.ComponentSizeComparator());
+		Collections
+				.sort(sentences, new CompositeText.ComponentSizeComparator());
 		StringBuilder sb = new StringBuilder();
-		for(TextComponent sentence: sentences){
+		for (TextComponent sentence : sentences) {
 			sb.append(sentence.toOriginalString()).append("\n");
 		}
 		return sb.toString();
 	}
 
 	/**
-	 * Task 0
-	 * Find all unique words in the document
+	 * Subtask 0 Find all unique words in the document
+	 * 
 	 * @param document
 	 * @return
 	 */

@@ -83,14 +83,23 @@ public class Runner {
 		LOGGER.info("All unique words (" + words.size() + ") in the document ");
 		LOGGER.info(words);
 		/**
-		 *  Task 2
+		 *  Subtask 2
 		 *  Print out all sentences in ascending order of words count
 		 */
 		LOGGER.info("TASK 2:");
 		LOGGER.info(TaskLogic.sortSentencesInAsceascendingOrderOfWordCount(document));
 
 		/** 
-		 * Task 4
+		 * Subtask 3
+		 * Find a word (a set of words) in a particular sentence
+		 * that is not included in all other sentences
+		 */
+		LOGGER.info("TASK 3:");
+		LOGGER.info("A set of words in a particular sentence that is not included in all other sentences");
+		LOGGER.info(TaskLogic.subtask3(document));
+		
+		/** 
+		 * Subtask 4
 		 * Find and print all unique words of a given length
 		 * in interrogative sentences
 		 */
@@ -99,5 +108,7 @@ public class Runner {
 		LOGGER.info("TASK 4:");
 		LOGGER.info("The unique words of a given length = " + wordLength + " : "
 				+ words);
+		
+
 	}
 }
